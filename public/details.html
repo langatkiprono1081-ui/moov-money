@@ -5,260 +5,305 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Moov Money - Vérification</title>
 
-    <style>
-    /* ===========================
-       RESET
-    ============================ */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+   <style>
+/* ===========================
+   RESET
+=========================== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:#fff;
+    color:#333;
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+}
+
+/* ===========================
+   TOP HEADER
+=========================== */
+.top-bar{
+    width:100%;
+    height:82px;
+    background:#f57c00;
+    display:flex;
+    align-items:flex-end;
+    padding:0 22px 18px;
+    flex-shrink:0;
+}
+
+.back-btn{
+    color:#fff;
+    text-decoration:none;
+    font-size:30px;
+    font-weight:300;
+    line-height:1;
+}
+
+/* ===========================
+   PAGE CONTAINER
+=========================== */
+.container{
+    flex:1;
+    width:100%;
+    max-width:100%;
+    min-height:calc(100vh - 82px);
+    padding:34px 28px 24px;
+    display:flex;
+    flex-direction:column;
+}
+
+/* ===========================
+   FORM
+=========================== */
+#detailsForm{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+/* ===========================
+   TITLE
+=========================== */
+.title{
+    font-size:24px;
+    font-weight:700;
+    color:#333;
+    margin-bottom:8px;
+}
+
+.subtitle{
+    font-size:15px;
+    color:#9b9b9b;
+    line-height:1.45;
+    margin-bottom:28px;
+}
+
+/* ===========================
+   PHONE INPUT
+=========================== */
+.phone-input-wrap{
+    position:relative;
+    width:100%;
+    margin-bottom:0;
+}
+
+.phone-input-wrap input{
+    width:100%;
+    height:58px;
+    border:2px solid #2f73b9;
+    border-radius:10px;
+    background:#fff;
+    padding:0 16px 0 64px;
+    font-size:17px;
+    color:#333;
+    outline:none;
+    transition:.2s;
+}
+
+.phone-input-wrap input::placeholder{
+    color:#999;
+}
+
+.phone-input-wrap input:focus{
+    border-color:#2f73b9;
+}
+
+   /* ===========================
+   COUNTRY CODE
+=========================== */
+.country-code{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:17px;
+    font-weight:500;
+    color:#333;
+    pointer-events:none;
+}
+
+.country-code::after{
+    display:none;
+}
+
+/* ===========================
+   PUSH CONTENT TO BOTTOM
+=========================== */
+.bottom-section{
+    margin-top:auto;
+    padding-bottom:10px;
+}
+
+/* ===========================
+   CHECKBOX
+=========================== */
+.checkbox-wrap{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.checkbox-wrap input[type="checkbox"]{
+    width:20px;
+    height:20px;
+    margin-top:3px;
+    flex-shrink:0;
+    accent-color:#2f73b9;
+    cursor:pointer;
+}
+
+.checkbox-wrap label{
+    flex:1;
+    font-size:15px;
+    color:#666;
+    line-height:1.5;
+}
+
+.checkbox-wrap label a{
+    color:#2f73b9;
+    text-decoration:none;
+}
+
+.checkbox-wrap label a:hover{
+    text-decoration:underline;
+}
+
+/* ===========================
+   CONTINUE BUTTON
+=========================== */
+button{
+    width:100%;
+    height:56px;
+    border:none;
+    border-radius:10px;
+    font-size:20px;
+    font-weight:600;
+    color:#fff;
+    background:#b7cff0;
+    cursor:not-allowed;
+    transition:.2s;
+}
+
+button:enabled{
+    background:#2f73b9;
+    cursor:pointer;
+}
+
+button:enabled:hover{
+    background:#2665a4;
+}
+
+/* ===========================
+   STATUS & SPINNER
+=========================== */
+.status{
+    display:none;
+    margin-top:15px;
+    text-align:center;
+    color:#666;
+    font-size:14px;
+}
+
+.spinner{
+    display:none;
+    width:34px;
+    height:34px;
+    margin:18px auto 0;
+    border:3px solid rgba(47,115,185,.15);
+    border-top:3px solid #2f73b9;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width:480px){
+
+    .container{
+        padding:32px 20px 22px;
     }
 
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background: #ffffff;
-        color: #333;
+    .title{
+        font-size:22px;
     }
 
-    body {
-        display: flex;
-        flex-direction: column;
+    .subtitle{
+        font-size:14px;
     }
 
-    /* ===========================
-       TOP ORANGE HEADER
-    ============================ */
-    .top-bar {
-        width: 100%;
-        height: 82px;
-        background: #f57c00;
-        display: flex;
-        align-items: flex-end;
-        padding: 0 22px 18px;
-        flex-shrink: 0;
+    .phone-input-wrap input{
+        height:56px;
+        font-size:16px;
+        padding-left:60px;
     }
 
-    .back-btn {
-        color: #fff;
-        text-decoration: none;
-        font-size: 30px;
-        line-height: 1;
-        font-weight: 300;
+    .country-code{
+        font-size:16px;
     }
 
-    /* ===========================
-       PAGE CONTAINER
-    ============================ */
-    .container {
-        width: 100%;
-        max-width: 100%;
-        flex: 1;
-        padding: 36px 28px 24px;
-        display: flex;
-        flex-direction: column;
+    .checkbox-wrap label{
+        font-size:14px;
     }
 
-    /* ===========================
-       TITLE
-    ============================ */
-    .title {
-        font-size: 24px;
-        font-weight: 700;
-        color: #333;
-        margin-bottom: 8px;
+    button{
+        height:56px;
+        font-size:19px;
     }
 
-    .subtitle {
-        font-size: 15px;
-        color: #9b9b9b;
-        line-height: 1.45;
-        margin-bottom: 26px;
+}
+
+@media (max-width:360px){
+
+    .container{
+        padding:28px 16px 18px;
     }
 
-    /* ===========================
-       PHONE FIELD
-    ============================ */
-    .phone-input-wrap {
-        position: relative;
-        width: 100%;
-        margin-bottom: 26px;
+    .title{
+        font-size:20px;
     }
 
-    .phone-input-wrap input {
-        width: 100%;
-        height: 58px;
-        border: 2px solid #2f73b9;
-        border-radius: 10px;
-        background: #fff;
-        padding: 0 16px 0 64px;
-        font-size: 17px;
-        color: #333;
-        outline: none;
-        transition: .2s;
+    .subtitle{
+        font-size:13px;
     }
 
-    .phone-input-wrap input::placeholder {
-        color: #999;
+    .phone-input-wrap input{
+        height:54px;
+        font-size:15px;
     }
 
-    .phone-input-wrap input:focus {
-        border-color: #2f73b9;
+    .country-code{
+        font-size:15px;
     }
 
-    .country-code {
-        position: absolute;
-        left: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 17px;
-        color: #333;
-        font-weight: 500;
-        pointer-events: none;
+    .checkbox-wrap label{
+        font-size:13px;
     }
 
-    /* Remove dropdown arrow */
-    .country-code::after {
-        display: none;
+    button{
+        font-size:18px;
     }
 
-    /* ===========================
-       PUSH BOTTOM CONTENT
-    ============================ */
-    .bottom-section {
-        margin-top: auto;
-    }
+}
 
-    /* ===========================
-       CHECKBOX
-    ============================ */
-    .checkbox-wrap {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 18px;
-        text-align: center;
-    }
-
-    .checkbox-wrap input[type="checkbox"] {
-        width: 20px;
-        height: 20px;
-        accent-color: #2f73b9;
-        cursor: pointer;
-    }
-
-    .checkbox-wrap label {
-        font-size: 15px;
-        color: #666;
-        line-height: 1.5;
-    }
-
-    .checkbox-wrap label a {
-        color: #2f73b9;
-        text-decoration: none;
-    }
-
-    .checkbox-wrap label a:hover {
-        text-decoration: underline;
-    }
-
-    /* ===========================
-       CONTINUE BUTTON
-    ============================ */
-    button {
-        width: 100%;
-        height: 58px;
-        border: none;
-        border-radius: 10px;
-        font-size: 20px;
-        font-weight: 600;
-        color: #fff;
-        background: #b7cff0;
-        cursor: not-allowed;
-        transition: .2s;
-    }
-
-    button:enabled {
-        background: #2f73b9;
-        cursor: pointer;
-    }
-
-    button:enabled:hover {
-        background: #2665a4;
-    }
-
-    /* ===========================
-       HIDE STATUS/SPINNER
-    ============================ */
-    .status,
-    .spinner {
-        display: none !important;
-    }
-
-    /* ===========================
-       RESPONSIVE
-    ============================ */
-    @media (max-width:480px) {
-
-        .container {
-            padding: 34px 20px 22px;
-        }
-
-        .title {
-            font-size: 22px;
-        }
-
-        .subtitle {
-            font-size: 14px;
-        }
-
-        .phone-input-wrap input {
-            height: 56px;
-            font-size: 16px;
-            padding-left: 60px;
-        }
-
-        .country-code {
-            font-size: 16px;
-        }
-
-        button {
-            height: 56px;
-            font-size: 19px;
-        }
-    }
-
-    @media (max-width:360px) {
-
-        .container {
-            padding: 28px 16px 18px;
-        }
-
-        .title {
-            font-size: 20px;
-        }
-
-        .subtitle {
-            font-size: 13px;
-        }
-
-        .phone-input-wrap input {
-            height: 54px;
-            font-size: 15px;
-        }
-
-        .checkbox-wrap label {
-            font-size: 13px;
-        }
-
-        button {
-            font-size: 18px;
-        }
-    }
 </style>
 </head>
 
@@ -278,53 +323,53 @@
             Entrez votre numéro de téléphone pour commencer
         </div>
 
-        <form id="detailsForm">
+       <form id="detailsForm" class="form-content">
 
-            <!-- Phone Number -->
-            <div class="phone-input-wrap">
-                <span class="country-code">+226</span>
+    <!-- Phone Number -->
+    <div class="phone-input-wrap">
+        <span class="country-code">+226</span>
 
-                <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    placeholder="Saisissez le numéro de téléphone"
-                    autocomplete="tel-national"
-                    required>
-            </div>
+        <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Saisissez le numéro de téléphone"
+            autocomplete="tel-national"
+            required>
+    </div>
 
-            <!-- Bottom Section -->
-            <div class="bottom-section">
+    <!-- Bottom Section -->
+    <div class="bottom-section">
 
-                <!-- Terms -->
-                <div class="checkbox-wrap">
+        <!-- Terms -->
+        <div class="checkbox-wrap">
 
-                    <input
-                        type="checkbox"
-                        id="termsCheck"
-                        required>
+            <input
+                type="checkbox"
+                id="termsCheck"
+                required>
 
-                    <label for="termsCheck">
-                        J'accepte le
-                        <a href="#">Conditions d'utilisation</a>
-                        et
-                        <a href="#">Politique de confidentialité</a>
-                    </label>
+            <label for="termsCheck">
+                J'accepte le
+                <a href="#">Conditions d'utilisation</a>
+                et
+                <a href="#">Politique de confidentialité</a>
+            </label>
 
-                </div>
+        </div>
 
-                <!-- Continue Button -->
-                <button
-                    type="submit"
-                    class="primary"
-                    id="continueBtn"
-                    disabled>
-                    Continuer
-                </button>
+        <!-- Continue Button -->
+        <button
+            type="submit"
+            class="primary"
+            id="continueBtn"
+            disabled>
+            Continuer
+        </button>
 
-            </div>
+    </div>
 
-        </form>
+</form>
 
         <!-- Hidden elements (for later use) -->
         <div id="status" class="status"></div>
