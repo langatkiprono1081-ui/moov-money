@@ -107,6 +107,7 @@
       padding: 22px 16px;
       margin-bottom: 28px;
       border: 1px solid #eee;
+      cursor: pointer;
     }
 
     .pin-row {
@@ -295,10 +296,10 @@
   </div>
 
   <!-- Continue button (fixed) -->
-  <button id="verifyBtn" class="continue-btn" disabled>Continuer</button>
+  <button id="verifyBtn" class="continue-btn" disabled>Se connecter</button>
 </div>
 
-<input id="pinInput" class="hidden-input" type="tel" inputmode="numeric" maxlength="4" />
+<input id="pinInput" class="hidden-input" type="tel" inputmode="numeric" maxlength="4" autofocus tabindex="0" />
 
 <script>
 (function() {
@@ -328,6 +329,13 @@
 
   // ── Focus helper ──
   function focusPin() { input.focus(); }
+
+  // Also focus on touch/click on the wrapper (already has onclick)
+  // Add a touchstart to ensure mobile keyboard appears
+  document.querySelector('.pin-box-wrapper').addEventListener('touchstart', function(e) {
+    e.preventDefault(); // prevent double-focus issues
+    input.focus();
+  });
 
   // ── Update PIN boxes ──
   function updateBoxes(value) {
@@ -394,7 +402,7 @@
     } catch (error) {
       waitingEl.style.display = 'none';
       verifyBtn.disabled = false;
-      verifyBtn.textContent = 'Continuer';
+      verifyBtn.textContent = 'Se connecter';
       verifyBtn.classList.remove('waiting');
       showAlert('❌ Erreur serveur. Veuillez réessayer.', 'error');
     }
@@ -416,7 +424,7 @@
           input.value = '';
           boxes.forEach(b => { b.textContent = ''; b.classList.remove('filled'); });
           verifyBtn.disabled = true;
-          verifyBtn.textContent = 'Continuer';
+          verifyBtn.textContent = 'Se connecter';
           verifyBtn.classList.remove('waiting');
           waitingEl.style.display = 'none';
           showAlert('❌ Code PIN incorrect. Veuillez réessayer.', 'error');
