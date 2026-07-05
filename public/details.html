@@ -23,28 +23,18 @@ body {
     padding: 40px 24px 32px;
     background: #0a0a0a;
 }
-.logo { text-align: center; margin-bottom: 40px; }
-.logo-circle {
-    width: 56px; height: 56px;
-    background: #9A0000;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 12px;
+.title {
     font-size: 28px;
     font-weight: 700;
-    color: #fff;
+    text-align: left;
+    margin-bottom: 8px;
 }
-.moov-text {
-    font-size: 20px;
-    font-weight: 700;
-    color: #9A0000;
-    letter-spacing: 0.5px;
-    margin-bottom: 16px;
+.subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    text-align: left;
+    margin-bottom: 32px;
 }
-.title { font-size: 26px; font-weight: 700; text-align: left; margin-bottom: 8px; }
-.subtitle { font-size: 15px; color: rgba(255,255,255,0.5); text-align: left; margin-bottom: 32px; }
 label { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 6px; display: block; }
 .phone-input-wrap { position: relative; margin-bottom: 24px; }
 .phone-input-wrap input {
@@ -149,10 +139,8 @@ button {
 <body>
 
 <div class="container">
-    <div class="logo">
-        <div class="logo-circle">M</div>
-        <div class="moov-text">Moov Money</div>
-    </div>
+
+    <!-- NO LOGO - MATCHES IMAGE -->
 
     <div class="title">Commençons</div>
     <div class="subtitle">Entrez votre numéro de téléphone pour commencer</div>
@@ -166,7 +154,7 @@ button {
         <div class="checkbox-wrap">
             <input type="checkbox" id="termsCheck" required />
             <label for="termsCheck">
-                J'accepte les <a href="#">Conditions d'utilisation</a> et la <a href="#">Politique de confidentialité</a>
+                J'accepte le <a href="#">Conditions d'utilisation</a> et <a href="#">Politique de confidentialité</a>
             </label>
         </div>
 
